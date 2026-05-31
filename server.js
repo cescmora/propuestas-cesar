@@ -1,7 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,6 +11,23 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ── helpers ──────────────────────────────────────────────────────────────────
+
+function generateSlug(firstName, lastName, proposals) {
+  const name = [firstName, lastName].filter(Boolean).join(' ');
+  const base = name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+
+  const existing = proposals.map(p => p.id);
+  if (!existing.includes(base)) return base;
+  let n = 2;
+  while (existing.includes(`${base}-${n}`)) n++;
+  return `${base}-${n}`;
+}
 
 function readProposals() {
   return JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
@@ -140,7 +156,7 @@ app.post('/api/proposals', (req, res) => {
     return res.status(400).json({ error: 'Faltan campos requeridos.' });
   }
   const proposals = readProposals();
-  const id = crypto.randomBytes(6).toString('hex');
+  const id = generateSlug(firstName, lastName, proposals);
   proposals.push({
     id,
     firstName,
