@@ -1,0 +1,49 @@
+[
+  {
+    "id": "a2ca83c7a2ef",
+    "firstName": "Cármen",
+    "lastName": "Álava",
+    "industry": "",
+    "plan": "Profesional",
+    "price": 900,
+    "contentTypes": [
+      {
+        "name": "Videos de proceso",
+        "desc": "Mostramos cómo se transforma un espacio desde cero. Cada mes tocamos un tema diferente según el momento en que se encuentra la obra."
+      },
+      {
+        "name": "Videos de anécdotas",
+        "desc": "El lado más humano. Momentos e historias que hacen sentir a las personas que conocen a Carmen de verdad."
+      },
+      {
+        "name": "Videos de criterio",
+        "desc": "Opinión sobre tendencias, materiales y decisiones de diseño. Estos videos abren la puerta a productos digitales como guías de estilo."
+      },
+      {
+        "name": "Carrusel",
+        "desc": "Secuencias visuales de avances, detalles en obra y momentos trabajando. Se eligen según cada proyecto."
+      }
+    ],
+    "semanas": [
+      {
+        "tipo": "Video de proceso",
+        "plus": ""
+      },
+      {
+        "tipo": "Video de criterio",
+        "plus": ""
+      },
+      {
+        "tipo": "Video de anécdotas",
+        "plus": ""
+      },
+      {
+        "tipo": "Video de proceso",
+        "plus": ""
+      }
+    ],
+    "proposalIntro": "Lo que vamos a construir juntos no es una cuenta de redes más. Es la versión digital de lo que ya eres: alguien con experiencia, criterio y una forma propia de hacer las cosas. La estrategia parte de escucharte — cómo hablas de tu trabajo, qué detalles te importan, cómo describes lo que haces con orgullo. Eso es lo que traducimos en contenido. Y por eso se va a ver diferente a todo lo demás.",
+    "includes": "Diagnóstico inicial de marca personal\n1 día de producción mensual en campo\n4 piezas editadas (reels + carruseles)\nDirección creativa completa\n1 call mensual de estrategia",
+    "createdAt": "2026-05-31T21:28:17.517Z"
+  }
+]

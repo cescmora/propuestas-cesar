@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta · {{CLIENT_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #7BAEC8;
+  --blue-dark: #4A7F9A;
+  --blue-light: #EAF3F8;
+  --cream: #F5F2ED;
+  --black: #1A1A1A;
+  --white: #FFFFFF;
+  --gray: #888888;
+  --mid: #555555;
+  --border: rgba(26,26,26,0.1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--cream); color: var(--black); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+.progress { position: fixed; top: 0; left: 0; z-index: 200; height: 3px; background: var(--blue-dark); width: 0%; transition: width 0.1s linear; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 16px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(245,242,237,0.95); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--border);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; }
+.nav-right { font-size: 10px; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ── PORTADA ── */
+.portada {
+  min-height: 100vh; padding-top: 56px;
+  background: var(--blue);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 120px 48px 80px;
+  position: relative;
+}
+.portada-eyebrow {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); margin-bottom: 28px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.portada-eyebrow::before, .portada-eyebrow::after { content: ''; width: 32px; height: 0.5px; background: rgba(255,255,255,0.4); }
+.portada-title { line-height: 1; margin-bottom: 16px; }
+.portada-title .t-sans {
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(64px, 10vw, 120px);
+  font-weight: 600; text-transform: uppercase;
+  color: var(--white); display: block; letter-spacing: -3px;
+}
+.portada-title .t-serif {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 400; text-transform: none;
+  color: var(--black); display: block; letter-spacing: -1px;
+  margin-top: -8px;
+}
+.portada-sub {
+  font-size: 12px; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-top: 28px; margin-bottom: 56px;
+}
+.portada-meta {
+  display: flex; gap: 0; border: 0.5px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+}
+.meta-item { padding: 16px 40px; border-right: 0.5px solid rgba(255,255,255,0.15); text-align: center; }
+.meta-item:last-child { border-right: none; }
+.meta-k { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+.meta-v { font-size: 12px; color: rgba(255,255,255,0.85); font-weight: 400; }
+.portada-page { position: absolute; bottom: 28px; right: 48px; font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; }
+
+/* ── SECCIONES ── */
+.sec { padding: 96px 48px; max-width: 960px; margin: 0 auto; opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.sec-wrap { padding: 96px 48px; }
+.sec-wrap.blue { background: var(--blue); }
+.sec-wrap.white { background: var(--white); }
+.sec-wrap.cream { background: var(--cream); }
+.sec.visible { opacity: 1; transform: translateY(0); }
+.sec-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 0.5px solid var(--border); margin-bottom: 64px; }
+.sec-header.inv { border-color: rgba(255,255,255,0.2); }
+.sec-info { font-size: 10px; color: var(--gray); letter-spacing: 0.08em; }
+.sec-info.w { color: rgba(255,255,255,0.4); }
+
+.display-title { text-align: center; margin-bottom: 56px; line-height: 0.95; }
+.display-title .t-sans {
+  font-family: 'Barlow', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 600; text-transform: uppercase;
+  display: block; letter-spacing: -2px;
+}
+.display-title .t-serif {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 4.5vw, 60px);
+  font-weight: 400; text-transform: none;
+  display: block; letter-spacing: -0.5px; margin-top: 4px;
+}
+.display-title.white .t-sans { color: var(--white); }
+.display-title.white .t-serif { color: var(--black); }
+.display-title .t-serif.blue { color: var(--blue-dark); }
+
+/* ── PROPUESTA ── */
+.prop-intro { font-size: 15px; line-height: 1.9; color: var(--mid); max-width: 620px; margin: 0 auto 56px; text-align: center; }
+.prop-intro p { margin-bottom: 12px; }
+.prop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 0.5px solid var(--border); }
+.prop-item { background: var(--cream); padding: 36px 32px; transition: background 0.2s; }
+.prop-item:hover { background: var(--blue-light); }
+.prop-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: var(--blue); opacity: 0.3; line-height: 1; margin-bottom: 12px; }
+.prop-tipo { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
+.prop-desc { font-size: 12.5px; color: var(--gray); line-height: 1.7; }
+
+/* ── PROCESO ── */
+.proceso-intro { font-size: 15px; line-height: 1.9; color: rgba(255,255,255,0.75); max-width: 560px; margin: 0 auto 40px; text-align: center; }
+.semanas-wrap { border: 0.5px solid rgba(255,255,255,0.2); overflow: hidden; }
+.semanas-head { display: grid; grid-template-columns: repeat(4,1fr); background: rgba(0,0,0,0.25); }
+.sem-h { padding: 14px 16px; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); border-right: 0.5px solid rgba(255,255,255,0.1); text-align: center; }
+.sem-h:last-child { border-right: none; }
+.semanas-body { display: grid; grid-template-columns: repeat(4,1fr); }
+.sem-item { padding: 24px 16px; border-right: 0.5px solid rgba(255,255,255,0.12); border-top: 0.5px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.07); text-align: center; }
+.sem-item:last-child { border-right: none; }
+.sem-tipo { font-size: 12px; font-weight: 500; color: var(--white); margin-bottom: 4px; }
+.sem-plus { font-size: 11px; color: rgba(255,255,255,0.45); }
+.func-note { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 14px; font-style: italic; text-align: center; }
+
+/* ── INVERSIÓN ── */
+.inv-center { text-align: center; }
+.inv-plan { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 10px; }
+.inv-price { font-family: 'Playfair Display', serif; font-size: 100px; font-weight: 900; line-height: 1; letter-spacing: -3px; }
+.inv-cadencia { font-size: 13px; color: var(--gray); margin-top: 10px; margin-bottom: 40px; letter-spacing: 0.04em; }
+.inv-list { list-style: none; max-width: 480px; margin: 0 auto 48px; text-align: left; }
+.inv-list li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; color: var(--mid); }
+.inv-list li:last-child { border-bottom: none; }
+.inv-dash { color: var(--blue-dark); flex-shrink: 0; font-weight: 600; }
+.inv-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 720px; margin: 0 auto; }
+.pago-block { padding: 28px 32px; border: 0.5px solid var(--border); background: var(--white); }
+.pago-titulo { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--black); margin-bottom: 8px; }
+.pago-txt { font-size: 12.5px; color: var(--mid); line-height: 1.8; margin-bottom: 18px; }
+.datos { display: flex; flex-direction: column; }
+.dato-row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 0.5px solid var(--border); font-size: 11.5px; }
+.dato-row:last-child { border-bottom: none; }
+.dato-k { color: var(--gray); }
+.dato-v { color: var(--mid); }
+.nota-blue { background: var(--blue); padding: 28px 32px; display: flex; align-items: center; }
+.nota-blue p { font-size: 13px; color: var(--white); line-height: 1.7; }
+
+/* ── CIERRE ── */
+.cierre-center { text-align: center; max-width: 600px; margin: 0 auto; }
+.cierre-txt { font-size: 15px; line-height: 1.9; color: var(--mid); }
+.cierre-txt p { margin-bottom: 16px; }
+.cierre-txt p:last-child { margin-bottom: 0; }
+.firma { margin-top: 56px; padding-top: 28px; border-top: 2px solid var(--blue); text-align: center; }
+.firma-nombre { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.firma-cargo { font-size: 12px; color: var(--gray); margin-bottom: 6px; }
+.firma-contacto { font-size: 12px; color: var(--blue-dark); }
+
+/* ── TIPOS DE CONTENIDO DINÁMICOS ── */
+.content-types-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 0.5px solid var(--border); }
+.content-type-item { background: var(--cream); padding: 36px 32px; transition: background 0.2s; }
+.content-type-item:hover { background: var(--blue-light); }
+
+/* ── FOOTER ── */
+footer { background: var(--black); padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; }
+.foot-logo { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #fff; }
+.foot-note { font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.06em; }
+
+@keyframes up { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+.portada > * { opacity:0; animation: up 0.7s ease forwards; }
+.portada > *:nth-child(1){animation-delay:0.1s;}
+.portada > *:nth-child(2){animation-delay:0.2s;}
+.portada > *:nth-child(3){animation-delay:0.32s;}
+.portada > *:nth-child(4){animation-delay:0.44s;}
+
+@media(max-width:768px){
+  nav{padding:12px 20px;}
+  .portada{padding:100px 24px 64px;}
+  .portada-meta{flex-direction:column;}
+  .meta-item{border-right:none;border-bottom:0.5px solid rgba(255,255,255,0.15);}
+  .meta-item:last-child{border-bottom:none;}
+  .sec{padding:64px 24px;}
+  .sec-wrap{padding:64px 24px;}
+  .prop-grid, .content-types-grid{grid-template-columns:1fr;}
+  .semanas-head,.semanas-body{grid-template-columns:1fr 1fr;}
+  .inv-grid2{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:8px;text-align:center;padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+
+<nav>
+  <div class="nav-logo">César Mora</div>
+  <div class="nav-right">Director Creativo</div>
+</nav>
+
+<!-- PORTADA -->
+<div class="portada">
+  <p class="portada-eyebrow">Propuesta de contenido</p>
+  <h1 class="portada-title">
+    <span class="t-sans">{{CLIENT_FIRST_NAME}}</span>
+    <span class="t-serif">{{CLIENT_LAST_NAME}}</span>
+  </h1>
+  <p class="portada-sub">{{CLIENT_INDUSTRY}} · Costa Rica</p>
+  <div class="portada-meta">
+    <div class="meta-item">
+      <div class="meta-k">Fecha</div>
+      <div class="meta-v">{{DATE}}</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-k">Email</div>
+      <div class="meta-v">cesar.mora@loopersmedia.com</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-k">Contacto</div>
+      <div class="meta-v">8799-2629</div>
+    </div>
+  </div>
+  <div class="portada-page">01 · César Mora</div>
+</div>
+
+<!-- PROPUESTA -->
+<div class="sec-wrap cream">
+  <section class="sec" id="propuesta">
+    <div class="sec-header">
+      <span class="sec-info">César Mora / Director Creativo</span>
+      <span class="sec-info">{{DATE}}</span>
+    </div>
+    <h2 class="display-title">
+      <span class="t-sans">PROPUESTA</span>
+      <span class="t-serif blue">de contenido</span>
+    </h2>
+    <div class="prop-intro">
+      <p>{{PROPOSAL_INTRO}}</p>
+    </div>
+    <!-- TIPOS DE CONTENIDO — se generan dinámicamente -->
+    <div class="content-types-grid" id="contentTypesGrid">
+      {{CONTENT_TYPES_HTML}}
+    </div>
+  </section>
+</div>
+
+<!-- PROCESO -->
+<div class="sec-wrap blue">
+  <section class="sec" id="proceso">
+    <div class="sec-header inv">
+      <span class="sec-info w">César Mora / Director Creativo</span>
+      <span class="sec-info w">{{DATE}}</span>
+    </div>
+    <h2 class="display-title white">
+      <span class="t-sans">CÓMO FUNCIONA</span>
+      <span class="t-serif">cada mes</span>
+    </h2>
+    <p class="proceso-intro">Un día de producción al mes es todo lo que necesitamos. Nos organizamos juntos, llegamos con todo listo y salimos con el material para el mes completo. Cuatro piezas editadas y listas para publicar.</p>
+    <div class="semanas-wrap">
+      <div class="semanas-head">
+        <div class="sem-h">Semana 1</div>
+        <div class="sem-h">Semana 2</div>
+        <div class="sem-h">Semana 3</div>
+        <div class="sem-h">Semana 4</div>
+      </div>
+      <div class="semanas-body" id="semanasBody">
+        {{SEMANAS_HTML}}
+      </div>
+    </div>
+    <p class="func-note">* El orden puede ajustarse según los resultados y el momento del proyecto.</p>
+  </section>
+</div>
+
+<!-- INVERSIÓN -->
+<div class="sec-wrap cream">
+  <section class="sec" id="inversion">
+    <div class="sec-header">
+      <span class="sec-info">César Mora / Director Creativo</span>
+      <span class="sec-info">{{DATE}}</span>
+    </div>
+    <h2 class="display-title">
+      <span class="t-sans">PRESUPUESTO</span>
+      <span class="t-serif blue">e inversión</span>
+    </h2>
+    <div class="inv-center">
+      <div class="inv-plan">{{PLAN_NAME}}</div>
+      <div class="inv-price">{{PRICE}}</div>
+      <p class="inv-cadencia">por mes &nbsp;·&nbsp; mínimo 3 meses</p>
+      <ul class="inv-list" id="includesList">
+        {{INCLUDES_HTML}}
+      </ul>
+      <div class="inv-grid2">
+        <div class="pago-block">
+          <div class="pago-titulo">Condición de pago</div>
+          <p class="pago-txt">El pago mensual se realiza dentro de los primeros 5 días de cada mes para iniciar la planificación a tiempo.</p>
+          <div class="datos">
+            <div class="dato-row"><span class="dato-k">Banco</span><span class="dato-v">Banco BAC</span></div>
+            <div class="dato-row"><span class="dato-k">Titular</span><span class="dato-v">César Mora Delgado</span></div>
+            <div class="dato-row"><span class="dato-k">IBAN</span><span class="dato-v">CR79010200009406343143</span></div>
+          </div>
+        </div>
+        <div class="nota-blue">
+          <p>Textos, títulos y elementos gráficos incluidos en cada pieza. Sin costos adicionales.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CIERRE -->
+<div class="sec-wrap white">
+  <section class="sec" id="cierre">
+    <div class="sec-header">
+      <span class="sec-info">César Mora / Director Creativo</span>
+      <span class="sec-info">{{DATE}}</span>
+    </div>
+    <h2 class="display-title">
+      <span class="t-sans">UNA ÚLTIMA</span>
+      <span class="t-serif blue">cosa</span>
+    </h2>
+    <div class="cierre-center">
+      <div class="cierre-txt">
+        <p>Los resultados en redes no son inmediatos — y cualquiera que te diga lo contrario no te está siendo honesto. Lo que sí ocurre cuando hay constancia y criterio es que con el tiempo la audiencia correcta empieza a encontrarte, a seguirte y a confiar en ti.</p>
+        <p>El proceso es sencillo: arrancamos escuchando, probamos formatos, identificamos qué conecta y lo repetimos con intención. Mes a mes construimos algo que se siente tuyo — porque lo es.</p>
+      </div>
+      <div class="firma">
+        <div class="firma-nombre">César Mora</div>
+        <div class="firma-cargo">Director Creativo · Looper's Media</div>
+        <div class="firma-contacto">cesar.mora@loopersmedia.com · 8799-2629</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="foot-logo">César Mora / Director Creativo</div>
+  <div class="foot-note">Propuesta válida 30 días · Precios en USD · Mínimo 3 meses</div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('prog').style.width = pct + '%';
+});
+const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), { threshold: 0.08 });
+document.querySelectorAll('.sec').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

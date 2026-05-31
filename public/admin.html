@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Propuestas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .ct-block {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      background: #fafafa;
+    }
+    .ct-block label { margin-bottom: 0.3rem; }
+    .ct-block input[type="text"] { margin-bottom: 0.5rem; }
+    .ct-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .sem-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+    .sem-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+
+    <header class="admin-header">
+      <div class="logo">P</div>
+      <div>
+        <h1>Panel de Propuestas</h1>
+        <p>Crea y gestiona propuestas personalizadas para tus clientes</p>
+      </div>
+    </header>
+
+    <!-- FORMULARIO -->
+    <main>
+      <div class="card">
+        <h2>Nueva propuesta</h2>
+        <form id="proposalForm">
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+            <div class="form-group" style="margin-bottom:0">
+              <label for="firstName">Nombre *</label>
+              <input type="text" id="firstName" placeholder="Ej: Carmen" required />
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label for="lastName">Apellido / Marca</label>
+              <input type="text" id="lastName" placeholder="Ej: Brenes" />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem">
+            <label for="industry">Industria</label>
+            <select id="industry">
+              <option value="">Selecciona una industria</option>
+              <option>Diseño de Interiores</option>
+              <option>Arquitectura</option>
+              <option>Salud y Farmacias</option>
+              <option>Restaurantes y Gastronomía</option>
+              <option>Moda y Retail</option>
+              <option>Educación</option>
+              <option>Bienestar y Fitness</option>
+              <option>Tecnología</option>
+              <option>Inmobiliaria</option>
+              <option>Turismo y Hoteles</option>
+              <option>Servicios Profesionales</option>
+              <option>Otro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="plan">Plan *</label>
+            <select id="plan" required>
+              <option value="">Selecciona un plan</option>
+              <option>Starter</option>
+              <option>Profesional</option>
+              <option>Premium</option>
+              <option>Personalizado</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Precio mensual (USD) *</label>
+            <input type="number" id="price" placeholder="Ej: 900" min="0" required />
+          </div>
+
+          <!-- TIPOS DE CONTENIDO -->
+          <div class="form-group">
+            <label>Tipos de contenido</label>
+            <div id="contentTypesFields">
+
+              <div class="ct-block">
+                <div class="ct-num">TIPO 01</div>
+                <input type="text" class="ct-name" value="Videos de proceso" placeholder="Nombre del tipo" />
+                <textarea class="ct-desc" rows="2">Mostramos cómo se transforma un espacio desde cero. Cada mes tocamos un tema diferente según el momento en que se encuentra la obra.</textarea>
+              </div>
+
+              <div class="ct-block">
+                <div class="ct-num">TIPO 02</div>
+                <input type="text" class="ct-name" value="Videos de anécdotas" placeholder="Nombre del tipo" />
+                <textarea class="ct-desc" rows="2">El lado más humano. Momentos e historias que hacen sentir a las personas que conocen a Carmen de verdad.</textarea>
+              </div>
+
+              <div class="ct-block">
+                <div class="ct-num">TIPO 03</div>
+                <input type="text" class="ct-name" value="Videos de criterio" placeholder="Nombre del tipo" />
+                <textarea class="ct-desc" rows="2">Opinión sobre tendencias, materiales y decisiones de diseño. Estos videos abren la puerta a productos digitales como guías de estilo.</textarea>
+              </div>
+
+              <div class="ct-block">
+                <div class="ct-num">TIPO 04</div>
+                <input type="text" class="ct-name" value="Carrusel" placeholder="Nombre del tipo" />
+                <textarea class="ct-desc" rows="2">Secuencias visuales de avances, detalles en obra y momentos trabajando. Se eligen según cada proyecto.</textarea>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SEMANAS -->
+          <div class="form-group">
+            <label>Cómo funciona cada mes (4 semanas)</label>
+            <div id="semanasFields">
+
+              <div class="sem-row">
+                <div>
+                  <div class="sem-label">Semana 1 — Tipo</div>
+                  <input type="text" class="sem-tipo" value="Video de proceso" />
+                </div>
+                <div>
+                  <div class="sem-label">+ Complemento</div>
+                  <input type="text" class="sem-plus" value="+ Carrusel" />
+                </div>
+              </div>
+
+              <div class="sem-row">
+                <div>
+                  <div class="sem-label">Semana 2 — Tipo</div>
+                  <input type="text" class="sem-tipo" value="Video de criterio" />
+                </div>
+                <div>
+                  <div class="sem-label">+ Complemento</div>
+                  <input type="text" class="sem-plus" value="+ Carrusel" />
+                </div>
+              </div>
+
+              <div class="sem-row">
+                <div>
+                  <div class="sem-label">Semana 3 — Tipo</div>
+                  <input type="text" class="sem-tipo" value="Video de anécdotas" />
+                </div>
+                <div>
+                  <div class="sem-label">+ Complemento</div>
+                  <input type="text" class="sem-plus" value="+ Carrusel" />
+                </div>
+              </div>
+
+              <div class="sem-row">
+                <div>
+                  <div class="sem-label">Semana 4 — Tipo</div>
+                  <input type="text" class="sem-tipo" value="Video de proceso" />
+                </div>
+                <div>
+                  <div class="sem-label">+ Complemento</div>
+                  <input type="text" class="sem-plus" value="+ Carrusel" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="proposalIntro">Intro de propuesta</label>
+            <textarea id="proposalIntro" rows="6">Lo que vamos a construir juntos no es una cuenta de redes más. Es la versión digital de lo que ya eres: alguien con experiencia, criterio y una forma propia de hacer las cosas. La estrategia parte de escucharte — cómo hablas de tu trabajo, qué detalles te importan, cómo describes lo que haces con orgullo. Eso es lo que traducimos en contenido. Y por eso se va a ver diferente a todo lo demás.</textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="includes">Qué incluye el plan <span style="font-weight:400;text-transform:none;letter-spacing:0">(una línea por ítem)</span></label>
+            <textarea id="includes" rows="6">Diagnóstico inicial de marca personal
+1 día de producción mensual en campo
+4 piezas editadas (reels + carruseles)
+Dirección creativa completa
+1 call mensual de estrategia</textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Generar propuesta
+          </button>
+
+          <div class="result-banner" id="resultBanner">
+            <p>✅ ¡Propuesta creada exitosamente!</p>
+            <a id="resultLink" href="#" target="_blank"></a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- LISTA -->
+    <aside>
+      <div class="card">
+        <h2>Propuestas generadas</h2>
+        <div id="proposalsList">
+          <div class="empty-state">Cargando...</div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    const BASE = window.location.origin;
+
+    async function loadProposals() {
+      const res = await fetch('/api/proposals');
+      const proposals = await res.json();
+      const container = document.getElementById('proposalsList');
+
+      if (!proposals.length) {
+        container.innerHTML = '<div class="empty-state">No hay propuestas aún.</div>';
+        return;
+      }
+
+      container.innerHTML = proposals.slice().reverse().map(p => {
+        const name = [p.firstName, p.lastName].filter(Boolean).join(' ') || p.clientName || '—';
+        return `
+          <div class="proposal-item" id="item-${p.id}">
+            <div class="proposal-info">
+              <strong>${escHtml(name)}</strong>
+              <span>${escHtml(p.plan)} · $${p.price}/mes</span>
+            </div>
+            <div class="proposal-actions">
+              <a href="/p/${p.id}" target="_blank" class="btn btn-ghost">Ver</a>
+              <button class="btn btn-danger" onclick="deleteProposal('${p.id}')">✕</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    document.getElementById('proposalForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'Generando...';
+      btn.disabled = true;
+
+      // Recoger tipos de contenido como objetos {name, desc}
+      const contentTypes = [...document.querySelectorAll('.ct-block')].map(block => ({
+        name: block.querySelector('.ct-name').value.trim(),
+        desc: block.querySelector('.ct-desc').value.trim(),
+      })).filter(t => t.name);
+
+      // Recoger semanas como objetos {tipo, plus}
+      const semanas = [...document.querySelectorAll('.sem-row')].map(row => ({
+        tipo: row.querySelector('.sem-tipo').value.trim(),
+        plus: row.querySelector('.sem-plus').value.trim(),
+      }));
+
+      const body = {
+        firstName:     document.getElementById('firstName').value.trim(),
+        lastName:      document.getElementById('lastName').value.trim(),
+        industry:      document.getElementById('industry').value,
+        plan:          document.getElementById('plan').value,
+        price:         Number(document.getElementById('price').value),
+        contentTypes,
+        semanas,
+        proposalIntro: document.getElementById('proposalIntro').value.trim(),
+        includes:      document.getElementById('includes').value.trim(),
+      };
+
+      try {
+        const res = await fetch('/api/proposals', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        const fullUrl = `${BASE}${data.url}`;
+        const link = document.getElementById('resultLink');
+        link.href = fullUrl;
+        link.textContent = fullUrl;
+        document.getElementById('resultBanner').classList.add('show');
+
+        e.target.reset();
+        loadProposals();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Generar propuesta';
+        btn.disabled = false;
+      }
+    });
+
+    async function deleteProposal(id) {
+      if (!confirm('¿Eliminar esta propuesta?')) return;
+      await fetch(`/api/proposals/${id}`, { method: 'DELETE' });
+      document.getElementById(`item-${id}`)?.remove();
+      const list = document.getElementById('proposalsList');
+      if (!list.querySelector('.proposal-item')) {
+        list.innerHTML = '<div class="empty-state">No hay propuestas aún.</div>';
+      }
+    }
+
+    function escHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
+      );
+    }
+
+    loadProposals();
+  </script>
+</body>
+</html>

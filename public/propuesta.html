@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Propuesta Personalizada</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="proposal-page" id="app">
+    <div class="empty-state" style="padding:5rem 0">Cargando propuesta...</div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    function formatDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function escHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    async function render() {
+      const app = document.getElementById('app');
+
+      if (!id) {
+        app.innerHTML = `
+          <div class="error-state">
+            <h2>Propuesta no encontrada</h2>
+            <p>El enlace no contiene un identificador válido.</p>
+          </div>`;
+        return;
+      }
+
+      const res = await fetch(`/api/proposals/${id}`);
+
+      if (!res.ok) {
+        app.innerHTML = `
+          <div class="error-state">
+            <h2>Propuesta no disponible</h2>
+            <p>Es posible que el enlace haya expirado o sea incorrecto.</p>
+          </div>`;
+        return;
+      }
+
+      const p = await res.json();
+      document.title = `Propuesta para ${p.clientName}`;
+
+      const tags = (p.contentTypes || []).map(t =>
+        `<span class="tag">${escHtml(t)}</span>`
+      ).join('');
+
+      const notesBlock = p.notes ? `
+        <div class="notes-box">
+          <div class="section-label">Notas adicionales</div>
+          <p>${escHtml(p.notes)}</p>
+        </div>` : '';
+
+      app.innerHTML = `
+        <div class="proposal-hero">
+          <div class="badge">Propuesta personalizada</div>
+          <h1>Hola, ${escHtml(p.clientName)} 👋</h1>
+          <p class="subtitle">
+            Preparamos esta propuesta especialmente para tu negocio
+            ${p.industry ? `en el sector de <strong>${escHtml(p.industry)}</strong>` : ''}.
+          </p>
+          <p class="date">Generada el ${formatDate(p.createdAt)}</p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="label">Plan seleccionado</div>
+            <div class="value">${escHtml(p.plan)}</div>
+          </div>
+          ${p.industry ? `
+          <div class="info-box">
+            <div class="label">Industria</div>
+            <div class="value">${escHtml(p.industry)}</div>
+          </div>` : ''}
+          <div class="info-box" style="grid-column: ${p.industry ? 'auto' : '1 / -1'}">
+            <div class="label">Inversión mensual</div>
+            <div class="value price">$${Number(p.price).toLocaleString('es-ES')} <span style="font-size:0.9rem;font-weight:500;color:var(--muted)">USD/mes</span></div>
+          </div>
+        </div>
+
+        ${tags ? `
+        <div class="content-section">
+          <div class="section-label">¿Qué incluye tu plan?</div>
+          <h3>Tipos de contenido</h3>
+          <div class="tags">${tags}</div>
+        </div>` : ''}
+
+        ${notesBlock}
+
+        <div class="cta-box">
+          <h3>¿Listo para empezar?</h3>
+          <p>Responde este mensaje y coordinamos los próximos pasos juntos.</p>
+          <a href="mailto:cesarmoradelgado@gmail.com?subject=Acepto la propuesta — ${encodeURIComponent(p.plan)}&body=Hola, quiero confirmar mi propuesta del plan ${encodeURIComponent(p.plan)}.">
+            Aceptar propuesta →
+          </a>
+        </div>
+      `;
+    }
+
+    render();
+  </script>
+</body>
+</html>
