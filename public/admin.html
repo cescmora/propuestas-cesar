@@ -44,10 +44,11 @@
 
     <header class="admin-header">
       <div class="logo">P</div>
-      <div>
+      <div style="flex:1">
         <h1>Panel de Propuestas</h1>
         <p>Crea y gestiona propuestas personalizadas para tus clientes</p>
       </div>
+      <button class="btn btn-ghost" id="logoutBtn">Cerrar sesión</button>
     </header>
 
     <!-- FORMULARIO -->
@@ -324,6 +325,11 @@ Dirección creativa completa
         ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
       );
     }
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      window.location.href = '/login.html';
+    });
 
     loadProposals();
   </script>

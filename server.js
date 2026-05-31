@@ -1,13 +1,34 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'proposals.json');
 const TEMPLATE = fs.readFileSync(path.join(__dirname, 'templates', 'propuesta.html'), 'utf-8');
 
+const ADMIN_USER = 'cesar';
+const ADMIN_PASS = 'Prop#2025cesar';
+const SESSION_SECRET = 'p9Kx2mQv7nRw4tLs6hJcYeAzBuFdGiNo';
+
 app.use(express.json());
+app.use(session({
+  secret: SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true, maxAge: 8 * 60 * 60 * 1000 },
+}));
+
+function requireAuth(req, res, next) {
+  if (req.session && req.session.authenticated) return next();
+  res.redirect('/login.html');
+}
+
+app.get('/admin.html', requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -192,6 +213,19 @@ app.delete('/api/proposals/:id', (req, res) => {
   }
   writeProposals(filtered);
   res.json({ ok: true });
+});
+
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    req.session.authenticated = true;
+    return res.json({ ok: true });
+  }
+  res.status(401).json({ error: 'Credenciales incorrectas.' });
+});
+
+app.post('/api/logout', (req, res) => {
+  req.session.destroy(() => res.json({ ok: true }));
 });
 
 app.listen(PORT, () => {
