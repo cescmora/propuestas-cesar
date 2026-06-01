@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>César Mora · Director Creativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #EAEAEA;
+  --white: #F2F2F2;
+  --black: #0E0E0E;
+  --gray: #8A8A85;
+  --mid: #3A3A38;
+  --border: rgba(14,14,14,0.1);
+  --accent: #1A6B5A;
+  --card-border: 6px solid rgba(255,255,255,0.85);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  padding: 14px 36px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(234,234,234,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 0.5px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px; font-weight: 700; letter-spacing: -0.2px;
+}
+.nav-logo sup { font-size: 9px; vertical-align: super; }
+.nav-center { display: flex; gap: 36px; }
+.nav-center a {
+  font-size: 12px; color: var(--mid); text-decoration: none;
+  letter-spacing: 0.02em; transition: color 0.2s;
+}
+.nav-center a:hover { color: var(--black); }
+.nav-menu {
+  font-size: 12px; font-weight: 500; color: var(--mid);
+  border: 0.5px solid var(--border); background: var(--white);
+  padding: 8px 18px; border-radius: 100px;
+  cursor: pointer; display: flex; align-items: center; gap: 6px;
+  transition: all 0.2s; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.nav-menu:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+/* ── HERO ── */
+.hero { padding: 64px 36px 48px; text-align: center; max-width: 860px; margin: 0 auto; }
+.hero-tag {
+  display: inline-block; font-size: 11px; letter-spacing: 0.06em;
+  color: var(--mid); border: 0.5px solid var(--border);
+  background: var(--white); padding: 5px 16px; border-radius: 100px;
+  margin-bottom: 28px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  box-shadow: 0 0 0 5px rgba(255,255,255,0.5);
+  opacity: 0; animation: fadeDown 0.6s ease 0.1s forwards;
+}
+/* Título hero — Syne bold + Instrument Serif italic para la parte clave */
+.hero-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: clamp(40px, 6.5vw, 76px);
+  font-weight: 800; line-height: 1.05;
+  letter-spacing: -2px;
+  overflow: hidden;
+}
+.hero-title .line {
+  display: block; overflow: hidden;
+}
+.hero-title .word {
+  display: inline-block;
+  opacity: 0; transform: translateY(110%);
+  animation: wordSlide 0.7s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.hero-title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+  color: var(--gray); letter-spacing: -1px;
+}
+
+/* ── CARD PRINCIPAL ── */
+.main-card-wrap { padding: 0 36px 20px; }
+.main-card {
+  background: var(--white);
+  border-radius: 20px; overflow: hidden;
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 360px;
+  border: var(--card-border);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.06);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.main-card.visible { opacity: 1; transform: translateY(0); }
+.main-card:hover { box-shadow: 0 10px 60px rgba(0,0,0,0.1); }
+.main-card-img {
+  background: linear-gradient(135deg, #D4D0CA 0%, #C4C0BA 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.img-placeholder-txt { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(14,14,14,0.3); }
+.main-card-content { padding: 44px 40px; display: flex; flex-direction: column; justify-content: space-between; }
+.main-card-tag {
+  display: inline-block; font-size: 10px; letter-spacing: 0.08em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--mid); border: 0.5px solid var(--border);
+  background: var(--bg); padding: 4px 12px; border-radius: 100px;
+  margin-bottom: 18px; align-self: flex-start;
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.6);
+}
+.main-card-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: clamp(22px, 2.5vw, 32px); font-weight: 700;
+  line-height: 1.15; letter-spacing: -0.6px; margin-bottom: 14px;
+}
+.main-card-title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400; color: var(--gray);
+}
+.main-card-desc { font-size: 13px; line-height: 1.75; color: var(--gray); flex: 1; }
+.main-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 18px; border-top: 0.5px solid var(--border); }
+.main-card-meta { font-size: 11px; color: var(--gray); display: flex; align-items: center; gap: 6px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+.main-card-meta::before { content: '●'; font-size: 6px; color: var(--accent); }
+.main-card-author { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 14px; color: var(--mid); }
+
+/* ── GRID CARDS ── */
+.cards-grid-wrap { padding: 0 36px 20px; }
+.cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.card {
+  background: var(--white); border-radius: 16px; overflow: hidden;
+  border: var(--card-border);
+  box-shadow: 0 1px 20px rgba(0,0,0,0.04);
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0; transform: translateY(24px);
+}
+.card.visible { opacity: 1; transform: translateY(0); }
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.09); }
+.card-img { height: 190px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.card-img::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(to bottom, transparent, rgba(245,244,240,0.95)); }
+.card-img.c1 { background: linear-gradient(135deg, #C8B4A0, #D8C8B4); }
+.card-img.c2 { background: linear-gradient(135deg, #A8B4C0, #B8C4D0); }
+.card-img.c3 { background: linear-gradient(135deg, #B4BDB4, #C4CCC4); }
+.card-img-placeholder { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(14,14,14,0.22); }
+.card-tag {
+  position: absolute; top: 13px; right: 13px;
+  font-size: 10px; letter-spacing: 0.06em; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--mid); background: rgba(245,244,240,0.92);
+  padding: 4px 12px; border-radius: 100px;
+  backdrop-filter: blur(8px); border: 0.5px solid rgba(14,14,14,0.08);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.5);
+}
+.card-content { padding: 22px; }
+.card-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px; font-weight: 700; line-height: 1.25;
+  letter-spacing: -0.3px; margin-bottom: 8px;
+}
+.card-title em { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: var(--gray); }
+.card-desc { font-size: 12px; line-height: 1.65; color: var(--gray); }
+
+/* ── SOBRE MÍ NEGRO ── */
+.about-wrap { padding: 0 36px 20px; }
+.about-card {
+  background: var(--black); border-radius: 20px;
+  padding: 60px; display: grid; grid-template-columns: 1fr 1fr;
+  gap: 56px; align-items: center;
+  border: var(--card-border);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.12);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.about-card.visible { opacity: 1; transform: translateY(0); }
+.about-card-tag {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 18px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  display: flex; align-items: center; gap: 8px;
+}
+.about-card-tag::before { content: ''; width: 14px; height: 0.5px; background: rgba(255,255,255,0.2); }
+.about-card-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: clamp(28px, 3.5vw, 44px); font-weight: 800;
+  line-height: 1.05; letter-spacing: -1px; color: var(--white);
+}
+.about-card-title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400;
+  color: rgba(255,255,255,0.4); font-size: 0.85em; display: block;
+  letter-spacing: -0.5px; margin-top: 4px;
+}
+.about-img-placeholder {
+  width: 100%; aspect-ratio: 4/3; background: #1A1A18;
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  border: 0.5px solid rgba(255,255,255,0.06);
+}
+.about-img-placeholder span { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+.about-card-body { font-size: 13.5px; line-height: 1.85; color: rgba(255,255,255,0.5); margin-top: 24px; }
+.about-card-body p { margin-bottom: 12px; }
+.about-card-body strong { color: rgba(255,255,255,0.85); font-weight: 500; }
+
+/* ── SERVICIOS ── */
+.services-wrap { padding: 0 36px 20px; }
+.services-header { text-align: center; margin-bottom: 32px; }
+.services-header-tag {
+  display: inline-block; font-size: 11px; letter-spacing: 0.06em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--mid); border: 0.5px solid var(--border);
+  background: var(--white); padding: 5px 16px; border-radius: 100px;
+  margin-bottom: 18px;
+  box-shadow: 0 0 0 5px rgba(255,255,255,0.5);
+}
+.services-header-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: clamp(32px, 4.5vw, 56px); font-weight: 800;
+  line-height: 1.05; letter-spacing: -1.5px;
+}
+.services-header-title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400; color: var(--gray);
+}
+.services-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.service-card {
+  background: var(--white); border-radius: 16px; padding: 30px 26px;
+  border: var(--card-border);
+  box-shadow: 0 1px 20px rgba(0,0,0,0.04);
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0; transform: translateY(20px);
+}
+.service-card.visible { opacity: 1; transform: translateY(0); }
+.service-card:hover { transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+.service-card.featured { background: var(--black); color: var(--white); border-color: rgba(255,255,255,0.15); }
+.service-card-num { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 700; color: var(--accent); margin-bottom: 18px; letter-spacing: 0.04em; }
+.service-card.featured .service-card-num { color: rgba(255,255,255,0.3); }
+.service-card-name { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; line-height: 1.2; }
+.service-card-name em { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: var(--gray); }
+.service-card.featured .service-card-name em { color: rgba(255,255,255,0.35); }
+.service-card-desc { font-size: 12.5px; line-height: 1.7; color: var(--gray); margin-bottom: 24px; }
+.service-card.featured .service-card-desc { color: rgba(255,255,255,0.4); }
+.service-card-footer { padding-top: 18px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.service-card.featured .service-card-footer { border-color: rgba(255,255,255,0.08); }
+.service-card-price { font-family: 'Instrument Serif', serif; font-size: 28px; font-weight: 400; letter-spacing: -0.5px; }
+.service-card.featured .service-card-price { color: var(--white); }
+.service-card-type { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray); }
+.service-card.featured .service-card-type { color: rgba(255,255,255,0.3); }
+
+/* ── CTA ── */
+.cta-wrap { padding: 0 36px 72px; }
+.cta-card {
+  background: var(--white); border-radius: 20px; padding: 68px;
+  text-align: center;
+  border: var(--card-border);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.05);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.cta-card.visible { opacity: 1; transform: translateY(0); }
+.cta-card-tag {
+  display: inline-block; font-size: 11px; letter-spacing: 0.06em; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: var(--mid); border: 0.5px solid var(--border);
+  background: var(--bg); padding: 5px 16px; border-radius: 100px;
+  margin-bottom: 22px;
+  box-shadow: 0 0 0 5px rgba(255,255,255,0.5);
+}
+.cta-card-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: clamp(32px, 5vw, 60px); font-weight: 800;
+  line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 18px;
+}
+.cta-card-title em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-weight: 400; color: var(--gray);
+}
+.cta-card-desc { font-size: 14px; line-height: 1.8; color: var(--gray); max-width: 380px; margin: 0 auto 36px; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-btn-dark {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--black); color: var(--white);
+  padding: 13px 30px; border-radius: 100px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600;
+  text-decoration: none; letter-spacing: 0.04em;
+  transition: all 0.25s;
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.6);
+}
+.cta-btn-dark:hover { background: var(--accent); transform: translateY(-2px); }
+.cta-btn-light {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--black);
+  padding: 13px 30px; border-radius: 100px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600;
+  text-decoration: none; border: 0.5px solid var(--border);
+  transition: all 0.25s;
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.6);
+}
+.cta-btn-light:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+/* ── FOOTER ── */
+footer {
+  padding: 22px 36px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 0.5px solid var(--border);
+}
+.footer-logo { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 700; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 12px; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--black); }
+.footer-note { font-size: 11px; color: var(--gray); }
+
+/* ── ANIMACIONES ── */
+@keyframes fadeDown { from{opacity:0;transform:translateY(-10px);} to{opacity:1;transform:translateY(0);} }
+@keyframes wordSlide { from{opacity:0;transform:translateY(110%);} to{opacity:1;transform:translateY(0);} }
+
+@media(max-width:768px){
+  nav{padding:12px 20px;}
+  .nav-center{display:none;}
+  .hero{padding:48px 20px 36px;}
+  .main-card-wrap,.cards-grid-wrap,.about-wrap,.services-wrap,.cta-wrap{padding-left:16px;padding-right:16px;}
+  .main-card{grid-template-columns:1fr;}
+  .main-card-img{height:180px;}
+  .cards-grid,.services-cards{grid-template-columns:1fr;}
+  .about-card{grid-template-columns:1fr;padding:36px 24px;gap:28px;}
+  .cta-card{padding:44px 24px;}
+  footer{flex-direction:column;gap:14px;text-align:center;padding:20px;}
+  .footer-links{flex-wrap:wrap;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">César Mora<sup>®</sup></div>
+  <div class="nav-center">
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <div class="nav-menu">Menu ↓</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Director Creativo</div>
+  <h1 class="hero-title">
+    <span class="line">
+      <span class="word" style="animation-delay:0.2s">Traduzco</span>
+      <span class="word" style="animation-delay:0.28s"> lo</span>
+      <span class="word" style="animation-delay:0.36s"> que</span>
+      <span class="word" style="animation-delay:0.44s"> eres</span>
+    </span>
+    <span class="line">
+      <span class="word" style="animation-delay:0.52s">en contenido que</span>
+      <span class="word" style="animation-delay:0.62s"> <em>la gente quiere ver.</em></span>
+    </span>
+  </h1>
+</div>
+
+<!-- CARD PRINCIPAL -->
+<div class="main-card-wrap">
+  <div class="main-card" id="sobre-mi">
+    <div class="main-card-img">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
+        <defs>
+          <radialGradient id="rg1" cx="40%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#B8B4AE"/>
+            <stop offset="100%" stop-color="#888480"/>
+          </radialGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#rg1)"/>
+        <circle cx="40%" cy="35%" r="80" fill="rgba(255,255,255,0.06)"/>
+        <circle cx="60%" cy="65%" r="120" fill="rgba(0,0,0,0.08)"/>
+        <ellipse cx="30%" cy="70%" rx="60" ry="90" fill="rgba(255,255,255,0.04)"/>
+        <rect x="55%" y="20%" width="80" height="120" rx="40" fill="rgba(0,0,0,0.07)" transform="rotate(15 55 20)"/>
+      </svg>
+    </div>
+    <div class="main-card-content">
+      <div>
+        <div class="main-card-tag">Sobre mí</div>
+        <h2 class="main-card-title">Director Creativo que parte de <em>escucharte.</em></h2>
+        <p class="main-card-desc">No trabajo con templates ni fórmulas. Parto de entender cómo piensas, cómo hablas y qué te hace diferente — y lo traduzco en contenido con dirección creativa real. No edito videos. Construyo presencias digitales.</p>
+      </div>
+      <div class="main-card-footer">
+        <span class="main-card-meta">César Mora · CR</span>
+        <span class="main-card-author">by César Mora</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GRID 3 CARDS -->
+<div class="cards-grid-wrap">
+  <div class="cards-grid">
+    <div class="card" style="transition-delay:0s">
+      <div class="card-img c1" style="background:none;position:relative;">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
+          <defs>
+            <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#C8B8A8"/>
+              <stop offset="100%" stop-color="#A89880"/>
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#lg1)"/>
+          <circle cx="70%" cy="30%" r="50" fill="rgba(255,255,255,0.1)"/>
+          <circle cx="20%" cy="70%" r="70" fill="rgba(0,0,0,0.08)"/>
+          <rect x="40%" y="40%" width="60" height="60" rx="8" fill="rgba(255,255,255,0.07)" transform="rotate(25 40 40)"/>
+        </svg>
+        <div class="card-tag">Estrategia</div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">La estrategia parte de escucharte, <em>no de las tendencias.</em></h3>
+        <p class="card-desc">Antes de grabar un solo video, entendemos quién eres y cómo hablas. Eso define todo lo demás.</p>
+      </div>
+    </div>
+    <div class="card" style="transition-delay:0.1s">
+      <div class="card-img c2" style="background:none;position:relative;">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
+          <defs>
+            <linearGradient id="lg2" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#8898A8"/>
+              <stop offset="100%" stop-color="#A8B8C8"/>
+            </linearGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#lg2)"/>
+          <ellipse cx="50%" cy="40%" rx="90" ry="60" fill="rgba(255,255,255,0.08)"/>
+          <circle cx="80%" cy="75%" r="45" fill="rgba(0,0,0,0.1)"/>
+          <line x1="0" y1="60%" x2="100%" y2="40%" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        </svg>
+        <div class="card-tag">Producción</div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Un día en campo. <em>Un mes de contenido listo.</em></h3>
+        <p class="card-desc">Dirección creativa completa en cada sesión. Tú apareces, nosotros nos encargamos del resto.</p>
+      </div>
+    </div>
+    <div class="card" style="transition-delay:0.2s">
+      <div class="card-img c3" style="background:none;position:relative;">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
+          <defs>
+            <radialGradient id="rg3" cx="60%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#B0B8B0"/>
+              <stop offset="100%" stop-color="#888E88"/>
+            </radialGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#rg3)"/>
+          <rect x="15%" y="20%" width="70%" height="60%" rx="20" fill="rgba(255,255,255,0.07)"/>
+          <circle cx="50%" cy="50%" r="30" fill="rgba(0,0,0,0.08)"/>
+        </svg>
+        <div class="card-tag">Resultados</div>
+      </div>
+      <div class="card-content">
+        <h3 class="card-title">Contenido que se siente tuyo <em>porque realmente lo es.</em></h3>
+        <p class="card-desc">El resultado no se parece a nadie más porque genuinamente no lo es. Cada pieza tiene criterio detrás.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOBRE MÍ NEGRO -->
+<div class="about-wrap">
+  <div class="about-card">
+    <div>
+      <p class="about-card-tag">Mi enfoque</p>
+      <h2 class="about-card-title">
+        Director Creativo
+        <em>con criterio propio.</em>
+      </h2>
+      <div class="about-card-body">
+        <p>Soy César Mora, especializado en contenido visual y estrategia de marca personal. Mi trabajo empieza escuchando — tu forma de hablar, de pensar, de describir lo que haces.</p>
+        <p><strong>No edito videos. Construyo presencias digitales</strong> que con el tiempo atraen a las personas correctas y generan confianza antes del primer contacto.</p>
+      </div>
+    </div>
+    <div>
+      <div class="about-img-placeholder" style="overflow:hidden;position:relative;">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
+          <defs>
+            <radialGradient id="rg4" cx="50%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#2A2A28"/>
+              <stop offset="100%" stop-color="#111110"/>
+            </radialGradient>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#rg4)"/>
+          <ellipse cx="50%" cy="38%" rx="55" ry="70" fill="rgba(255,255,255,0.04)"/>
+          <circle cx="75%" cy="65%" r="50" fill="rgba(255,255,255,0.03)"/>
+          <circle cx="25%" cy="25%" r="30" fill="rgba(255,255,255,0.04)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICIOS -->
+<div class="services-wrap" id="servicios">
+  <div class="services-header">
+    <div class="services-header-tag">Servicios</div>
+    <h2 class="services-header-title">Lo que hago <em>por ti.</em></h2>
+  </div>
+  <div class="services-cards">
+    <div class="service-card" style="transition-delay:0s">
+      <div class="service-card-num">01</div>
+      <div class="service-card-name">Diagnóstico <em>de marca</em></div>
+      <p class="service-card-desc">Sesión profunda donde analizamos quién eres, cómo te comunicas y qué te diferencia. Terminas con un roadmap de contenido para 3 meses.</p>
+      <div class="service-card-footer">
+        <span class="service-card-price">$500</span>
+        <span class="service-card-type">Pago único</span>
+      </div>
+    </div>
+    <div class="service-card featured" style="transition-delay:0.1s">
+      <div class="service-card-num">02</div>
+      <div class="service-card-name">Marca <em>activa</em></div>
+      <p class="service-card-desc">Estrategia, dirección creativa y producción mensual. Un día en campo, 4 piezas editadas y listas para publicar cada mes.</p>
+      <div class="service-card-footer">
+        <span class="service-card-price">$900</span>
+        <span class="service-card-type">Por mes</span>
+      </div>
+    </div>
+    <div class="service-card" style="transition-delay:0.2s">
+      <div class="service-card-num">03</div>
+      <div class="service-card-name">Presencia <em>completa</em></div>
+      <p class="service-card-desc">Máxima producción con 2 días en campo, 8 piezas editadas, gestión de redes y reporte mensual.</p>
+      <div class="service-card-footer">
+        <span class="service-card-price">$1,500</span>
+        <span class="service-card-type">Por mes</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-wrap" id="contacto">
+  <div class="cta-card">
+    <div class="cta-card-tag">¿Empezamos?</div>
+    <h2 class="cta-card-title">Tu marca merece <em>ser vista.</em></h2>
+    <p class="cta-card-desc">Si llegaste hasta aquí es porque algo resonó. Hablemos — sin compromiso, sin formularios largos.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/50687992629" class="cta-btn-dark" target="_blank">WhatsApp →</a>
+      <a href="mailto:cesar.mora@loopersmedia.com" class="cta-btn-light">Correo electrónico</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">César Mora</div>
+  <div class="footer-links">
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <div class="footer-note">© 2026 · Director Creativo</div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.main-card, .card, .about-card, .service-card, .cta-card').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
