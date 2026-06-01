@@ -289,6 +289,38 @@ footer {
   footer{flex-direction:column;gap:14px;text-align:center;padding:20px;}
   .footer-links{flex-wrap:wrap;justify-content:center;}
 }
+
+.videos-wrap { padding: 20px 36px; }
+.videos-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; align-items: start;
+}
+.video-card {
+  background: var(--white); border-radius: 20px; overflow: hidden;
+  border: var(--card-border); box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  display: flex; flex-direction: column;
+}
+.video-embed {
+  width: 100%; display: flex; justify-content: center;
+  align-items: flex-start; padding: 16px;
+}
+.video-embed iframe, .video-embed blockquote {
+  width: 100% !important; margin: 0 !important;
+}
+.video-label {
+  padding: 12px 20px; border-top: 0.5px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.video-tag {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gray); font-weight: 500;
+  background: var(--bg); padding: 4px 12px; border-radius: 100px;
+  border: 0.5px solid var(--border);
+}
+@media(max-width:768px){
+  .videos-wrap { padding: 16px; }
+  .videos-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -365,6 +397,46 @@ footer {
   </div>
 </div>
 
+
+<!-- VIDEOS -->
+<div class="videos-wrap">
+  <div class="services-header">
+    <div class="services-header-tag">Resultados</div>
+    <h2 class="services-header-title">Contenido que <em>habla solo.</em></h2>
+  </div>
+  <div class="videos-grid">
+
+    <!-- Instagram Reel -->
+    <div class="video-card">
+      <div class="video-embed">
+        <blockquote class="instagram-media"
+          data-instgrm-permalink="https://www.instagram.com/reel/DXfvk5UjJ53/"
+          data-instgrm-version="14"
+          style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;max-width:100%;min-width:326px;padding:0;width:100%;">
+        </blockquote>
+      </div>
+      <div class="video-label">
+        <span class="video-tag">Instagram Reel</span>
+      </div>
+    </div>
+
+    <!-- TikTok -->
+    <div class="video-card">
+      <div class="video-embed">
+        <blockquote class="tiktok-embed"
+          cite="https://www.tiktok.com/@mokkihomeliving/video/7625474297854774535"
+          data-video-id="7625474297854774535"
+          style="max-width:100%;min-width:325px;">
+          <section></section>
+        </blockquote>
+      </div>
+      <div class="video-label">
+        <span class="video-tag">TikTok</span>
+      </div>
+    </div>
+
+  </div>
+</div>
 <!-- SOBRE MÍ -->
 <div class="about-wrap" id="sobre-mi">
   <div class="about-card">
@@ -561,5 +633,8 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.card, .about-card, .service-card, .cta-card').forEach(el => obs.observe(el));
 </script>
+
+<script async src="//www.instagram.com/embed.js"></script>
+<script async src="https://www.tiktok.com/embed.js"></script>
 </body>
 </html>
