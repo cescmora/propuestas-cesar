@@ -291,35 +291,45 @@ footer {
 }
 
 .videos-wrap { padding: 20px 36px; }
-.videos-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 20px; align-items: start;
+.carousel-outer {
+  position: relative; overflow: hidden;
+  border-radius: 20px; border: var(--card-border);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  background: var(--white);
+  padding: 32px 0 56px;
 }
-.video-card {
-  background: var(--white); border-radius: 20px; overflow: hidden;
-  border: var(--card-border); box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-  display: flex; flex-direction: column;
+.carousel-track {
+  display: flex; transition: transform 0.5s cubic-bezier(0.25,1,0.5,1);
+  align-items: flex-start; padding: 0 32px; gap: 24px;
 }
-.video-embed {
-  width: 100%; display: flex; justify-content: center;
-  align-items: flex-start; padding: 16px;
+.carousel-slide {
+  flex: 0 0 auto; display: flex; justify-content: center;
+  width: 100%;
 }
-.video-embed iframe, .video-embed blockquote {
-  width: 100% !important; margin: 0 !important;
+.carousel-slide blockquote { margin: 0 auto !important; }
+.carousel-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: var(--white); border: 0.5px solid var(--border);
+  border-radius: 100px; width: 40px; height: 40px;
+  font-size: 16px; cursor: pointer; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  z-index: 10;
 }
-.video-label {
-  padding: 12px 20px; border-top: 0.5px solid var(--border);
-  display: flex; align-items: center; gap: 8px;
+.carousel-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+.carousel-prev { left: 16px; }
+.carousel-next { right: 16px; }
+.carousel-dots {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px;
 }
-.video-tag {
-  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--gray); font-weight: 500;
-  background: var(--bg); padding: 4px 12px; border-radius: 100px;
-  border: 0.5px solid var(--border);
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--border); cursor: pointer; transition: background 0.2s;
 }
+.dot.active { background: var(--black); }
 @media(max-width:768px){
   .videos-wrap { padding: 16px; }
-  .videos-grid { grid-template-columns: 1fr; }
+  .carousel-track { padding: 0 16px; }
 }
 </style>
 </head>
@@ -404,37 +414,33 @@ footer {
     <div class="services-header-tag">Resultados</div>
     <h2 class="services-header-title">Contenido que <em>habla solo.</em></h2>
   </div>
-  <div class="videos-grid">
+  <div class="carousel-outer">
+    <div class="carousel-track" id="carouselTrack">
 
-    <!-- Instagram Reel -->
-    <div class="video-card">
-      <div class="video-embed">
+      <div class="carousel-slide">
         <blockquote class="instagram-media"
           data-instgrm-permalink="https://www.instagram.com/reel/DXfvk5UjJ53/"
           data-instgrm-version="14"
-          style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;max-width:100%;min-width:326px;padding:0;width:100%;">
+          style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;max-width:340px;min-width:300px;padding:0;width:340px;">
         </blockquote>
       </div>
-      <div class="video-label">
-        <span class="video-tag">Instagram Reel</span>
-      </div>
-    </div>
 
-    <!-- TikTok -->
-    <div class="video-card">
-      <div class="video-embed">
+      <div class="carousel-slide">
         <blockquote class="tiktok-embed"
           cite="https://www.tiktok.com/@mokkihomeliving/video/7625474297854774535"
           data-video-id="7625474297854774535"
-          style="max-width:100%;min-width:325px;">
+          style="max-width:340px;min-width:300px;">
           <section></section>
         </blockquote>
       </div>
-      <div class="video-label">
-        <span class="video-tag">TikTok</span>
-      </div>
-    </div>
 
+    </div>
+    <button class="carousel-btn carousel-prev" onclick="moveCarousel(-1)">←</button>
+    <button class="carousel-btn carousel-next" onclick="moveCarousel(1)">→</button>
+    <div class="carousel-dots" id="carouselDots">
+      <span class="dot active" onclick="goToSlide(0)"></span>
+      <span class="dot" onclick="goToSlide(1)"></span>
+    </div>
   </div>
 </div>
 <!-- SOBRE MÍ -->
@@ -634,6 +640,58 @@ const obs = new IntersectionObserver(entries => {
 document.querySelectorAll('.card, .about-card, .service-card, .cta-card').forEach(el => obs.observe(el));
 </script>
 
+
+let currentSlide = 0;
+const totalSlides = 2;
+
+function moveCarousel(dir) {
+  currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
+  updateCarousel();
+}
+
+function goToSlide(index) {
+  currentSlide = index;
+  updateCarousel();
+}
+
+function updateCarousel() {
+  const track = document.getElementById('carouselTrack');
+  const slideWidth = track.querySelector('.carousel-slide').offsetWidth + 24;
+  track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlide);
+  });
+}
+
+// Touch / swipe support
+(function() {
+  const track = document.getElementById('carouselTrack');
+  if (!track) return;
+  let startX = 0;
+  let isDragging = false;
+
+  track.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+  }, { passive: true });
+
+  track.addEventListener('touchend', e => {
+    if (!isDragging) return;
+    const diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) moveCarousel(diff > 0 ? 1 : -1);
+    isDragging = false;
+  }, { passive: true });
+
+  // Mouse drag for desktop too
+  track.addEventListener('mousedown', e => { startX = e.clientX; isDragging = true; });
+  track.addEventListener('mouseup', e => {
+    if (!isDragging) return;
+    const diff = startX - e.clientX;
+    if (Math.abs(diff) > 40) moveCarousel(diff > 0 ? 1 : -1);
+    isDragging = false;
+  });
+  track.addEventListener('mouseleave', () => { isDragging = false; });
+})();
 <script async src="//www.instagram.com/embed.js"></script>
 <script async src="https://www.tiktok.com/embed.js"></script>
 </body>
