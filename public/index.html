@@ -290,39 +290,7 @@ footer {
   .footer-links{flex-wrap:wrap;justify-content:center;}
 }
 
-.videos-wrap { padding: 20px 36px; }
-.carousel-outer {
-  border-radius: 20px; border: var(--card-border);
-  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-  background: var(--white); padding: 24px;
-  max-width: 500px; margin: 0 auto;
-}
-.carousel-nav {
-  display: flex; align-items: center; justify-content: center;
-  gap: 16px; margin-bottom: 20px;
-}
-.carousel-btn {
-  background: var(--white); border: 0.5px solid var(--border);
-  border-radius: 100px; width: 36px; height: 36px;
-  font-size: 15px; cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  transition: all 0.2s; display: flex; align-items: center; justify-content: center;
-}
-.carousel-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
-.carousel-dots { display: flex; gap: 8px; align-items: center; }
-.dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--border); cursor: pointer; transition: background 0.2s;
-}
-.dot.active { background: var(--black); }
-.carousel-slides { position: relative; }
-.carousel-slide { display: none; }
-.carousel-slide.active { display: block; animation: fadeSlide 0.4s ease; }
-@keyframes fadeSlide { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
-@media(max-width:768px){
-  .videos-wrap { padding: 16px; }
-  .carousel-outer { padding: 16px; }
-}
+
 </style>
 </head>
 <body>
@@ -400,38 +368,6 @@ footer {
 </div>
 
 
-<!-- VIDEOS -->
-<div class="videos-wrap">
-  <div class="services-header">
-    <div class="services-header-tag">Resultados</div>
-    <h2 class="services-header-title">Contenido que <em>habla solo.</em></h2>
-  </div>
-  <div class="carousel-outer">
-    <!-- Navegación arriba -->
-    <div class="carousel-nav">
-      <button class="carousel-btn" onclick="moveCarousel(-1)">←</button>
-      <div class="carousel-dots">
-        <span class="dot active" onclick="goToSlide(0)"></span>
-        <span class="dot" onclick="goToSlide(1)"></span>
-      </div>
-      <button class="carousel-btn" onclick="moveCarousel(1)">→</button>
-    </div>
-    <!-- Slides -->
-    <div class="carousel-slides">
-      <div class="carousel-slide active" id="slide-0">
-        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DXfvk5UjJ53/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0 auto;max-width:400px;min-width:300px;padding:0;width:100%;"></blockquote>
-      </div>
-      <div class="carousel-slide" id="slide-1">
-        <blockquote class="tiktok-embed"
-          cite="https://www.tiktok.com/@mokkihomeliving/video/7625474297854774535"
-          data-video-id="7625474297854774535"
-          style="max-width:400px;min-width:300px;margin:0 auto;">
-          <section></section>
-        </blockquote>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- SOBRE MÍ -->
 <div class="about-wrap" id="sobre-mi">
   <div class="about-card">
@@ -630,29 +566,5 @@ document.querySelectorAll('.card, .about-card, .service-card, .cta-card').forEac
 </script>
 
 
-let currentSlide = 0;
-const totalSlides = 2;
-
-function moveCarousel(dir) {
-  currentSlide = (currentSlide + dir + totalSlides) % totalSlides;
-  updateCarousel();
-}
-
-function goToSlide(index) {
-  currentSlide = index;
-  updateCarousel();
-}
-
-function updateCarousel() {
-  document.querySelectorAll('.carousel-slide').forEach((s, i) => {
-    s.classList.toggle('active', i === currentSlide);
-  });
-  document.querySelectorAll('.dot').forEach((d, i) => {
-    d.classList.toggle('active', i === currentSlide);
-  });
-  if (window.instgrm) window.instgrm.Embeds.process();
-}
-<script async src="//www.instagram.com/embed.js"></script>
-<script async src="https://www.tiktok.com/embed.js"></script>
 </body>
 </html>
