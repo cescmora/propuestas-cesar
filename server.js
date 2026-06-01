@@ -103,8 +103,9 @@ function generateSemanasHTML(semanas, types) {
       plus: fallback.length > 1 ? '+ Coordinación' : '',
     }));
   }
-  return items.map(s =>
-    '<div class="sem-item">' +
+  return items.map((s, i) =>
+    '<div class="sem-block">' +
+      '<div class="sem-num">Semana ' + (i + 1) + '</div>' +
       '<div class="sem-tipo">' + esc(s.tipo) + '</div>' +
       '<div class="sem-plus">' + esc(s.plus) + '</div>' +
     '</div>'
