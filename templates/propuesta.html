@@ -10,15 +10,15 @@
 <style>
 
 :root {
-  --blue: #7BAEC8;
-  --blue-dark: #4A7F9A;
-  --blue-light: #EAF3F8;
-  --cream: #F5F2ED;
-  --black: #1A1A1A;
-  --white: #FFFFFF;
-  --gray: #888888;
-  --mid: #555555;
-  --border: rgba(26,26,26,0.1);
+  --blue: #1A6B5A;
+  --blue-dark: #155A4A;
+  --blue-light: #E8F2EF;
+  --cream: #EAEAEA;
+  --black: #0E0E0E;
+  --white: #F2F2F2;
+  --gray: #888885;
+  --mid: #3A3A38;
+  --border: rgba(14,14,14,0.1);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -30,7 +30,7 @@ nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   padding: 16px 48px;
   display: flex; justify-content: space-between; align-items: center;
-  background: rgba(245,242,237,0.95); backdrop-filter: blur(12px);
+  background: rgba(234,234,234,0.95); backdrop-filter: blur(12px);
   border-bottom: 0.5px solid var(--border);
 }
 .nav-logo { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; }
@@ -39,7 +39,7 @@ nav {
 /* ── PORTADA ── */
 .portada {
   min-height: 100vh; padding-top: 56px;
-  background: var(--blue);
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"), linear-gradient(145deg, #2A9A7A 0%, #1A6B5A 45%, #0A3528 100%);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center; padding: 120px 48px 80px;
@@ -86,7 +86,7 @@ nav {
 /* ── SECCIONES ── */
 .sec { padding: 96px 48px; max-width: 960px; margin: 0 auto; opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .sec-wrap { padding: 96px 48px; }
-.sec-wrap.blue { background: var(--blue); }
+.sec-wrap.blue { background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"), linear-gradient(145deg, #2A9A7A 0%, #1A6B5A 45%, #0A3528 100%); }
 .sec-wrap.white { background: var(--white); }
 .sec-wrap.cream { background: var(--cream); }
 .sec.visible { opacity: 1; transform: translateY(0); }
@@ -171,12 +171,33 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
 .foot-logo { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #fff; }
 .foot-note { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.06em; }
 
-@keyframes up { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
-.portada > * { opacity:0; animation: up 0.7s ease forwards; }
-.portada > *:nth-child(1){animation-delay:0.1s;}
-.portada > *:nth-child(2){animation-delay:0.2s;}
-.portada > *:nth-child(3){animation-delay:0.32s;}
-.portada > *:nth-child(4){animation-delay:0.44s;}
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+/* Entrada portada */
+.portada-eyebrow { opacity:0; animation: fadeIn 0.8s ease 0.1s forwards; }
+.portada-title   { opacity:0; animation: fadeUp 0.9s ease 0.22s forwards; }
+.portada-sub     { opacity:0; animation: fadeIn 0.7s ease 0.4s forwards; }
+.portada-meta    { opacity:0; animation: fadeIn 0.7s ease 0.55s forwards; }
+.portada-page    { opacity:0; animation: fadeIn 0.6s ease 0.7s forwards; }
+
+/* Reveal al hacer scroll — estado inicial */
+.sec .display-title,
+.sec .prop-intro,
+.sec .content-types-grid,
+.sec .semanas-wrap,
+.sec .inv-center,
+.sec .firma {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+/* Reveal al hacer scroll — estado visible con stagger */
+.sec.visible .display-title   { opacity:1; transform:translateY(0); transition-delay:0.12s; }
+.sec.visible .prop-intro      { opacity:1; transform:translateY(0); transition-delay:0.24s; }
+.sec.visible .content-types-grid { opacity:1; transform:translateY(0); transition-delay:0.36s; }
+.sec.visible .semanas-wrap    { opacity:1; transform:translateY(0); transition-delay:0.36s; }
+.sec.visible .inv-center      { opacity:1; transform:translateY(0); transition-delay:0.24s; }
+.sec.visible .firma           { opacity:1; transform:translateY(0); transition-delay:0.36s; }
 
 @media(max-width:768px){
   nav{padding:12px 20px;}
