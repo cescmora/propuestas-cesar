@@ -139,9 +139,7 @@ function renderProposal(p) {
   const includesHTML     = generateIncludesHTML(p.includes, p.contentTypes);
   const proposalIntro    = p.proposalIntro
     ? esc(p.proposalIntro)
-    : 'Preparé esta propuesta pensando en ' + firstName +
-      ' y en lo que ' + esc(p.industry || 'tu marca') +
-      ' necesita para crecer con constancia en redes sociales.';
+    : 'Lo que vamos a construir juntos no es una cuenta más de redes. Es la versión digital de lo que ya eres: alguien con experiencia, criterio y una forma propia de hacer las cosas. La estrategia parte de escucharte: cómo hablas de tu trabajo, qué detalles te importan y cómo describes lo que haces con orgullo. Eso es lo que traducimos en contenido. Y por eso se va a ver diferente a todo lo demás.';
 
   // Usar funciones en replace() evita que $, $& etc. del valor se interpreten como patrones
   return TEMPLATE
