@@ -6,7 +6,9 @@ const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'proposals.json');
-const TEMPLATE = fs.readFileSync(path.join(__dirname, 'templates', 'propuesta.html'), 'utf-8');
+const COT_FILE  = path.join(__dirname, 'data', 'cotizaciones.json');
+const TEMPLATE     = fs.readFileSync(path.join(__dirname, 'templates', 'propuesta.html'), 'utf-8');
+const COT_TEMPLATE = fs.readFileSync(path.join(__dirname, 'templates', 'cotizacion.html'), 'utf-8');
 
 const ADMIN_USER = 'cesar';
 const ADMIN_PASS = 'Prop#2025cesar';
@@ -27,6 +29,10 @@ function requireAuth(req, res, next) {
 
 app.get('/admin.html', requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+app.get('/admin-cotizacion.html', requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin-cotizacion.html'));
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -56,6 +62,14 @@ function readProposals() {
 
 function writeProposals(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+}
+
+function readCotizaciones() {
+  return JSON.parse(fs.readFileSync(COT_FILE, 'utf-8'));
+}
+
+function writeCotizaciones(data) {
+  fs.writeFileSync(COT_FILE, JSON.stringify(data, null, 2));
 }
 
 function esc(str) {
@@ -225,6 +239,130 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/logout', (req, res) => {
   req.session.destroy(() => res.json({ ok: true }));
+});
+
+// ── cotizaciones ──────────────────────────────────────────────────────────────
+
+function generateCotizacionId(clientName, cotizaciones) {
+  const base = 'cot-' + clientName
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9\s]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+  const existing = cotizaciones.map(c => c.id);
+  if (!existing.includes(base)) return base;
+  let n = 2;
+  while (existing.includes(`${base}-${n}`)) n++;
+  return `${base}-${n}`;
+}
+
+function generateCotizacionRef(cotizaciones) {
+  const year = new Date().getFullYear();
+  const re = new RegExp(`^COT-${year}-(\\d+)$`);
+  let max = 0;
+  cotizaciones.forEach(c => {
+    if (c.ref) { const m = c.ref.match(re); if (m) max = Math.max(max, parseInt(m[1])); }
+  });
+  return `COT-${year}-${String(max + 1).padStart(3, '0')}`;
+}
+
+function formatDateFromISO(iso) {
+  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto',
+                  'septiembre','octubre','noviembre','diciembre'];
+  const d = new Date(iso + 'T12:00:00Z');
+  return `${d.getUTCDate()} de ${months[d.getUTCMonth()]} de ${d.getUTCFullYear()}`;
+}
+
+function addDays(isoDate, days) {
+  const d = new Date(isoDate + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+function fmtUSD(n) {
+  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function renderCotizacion(c) {
+  const iva   = Math.round(c.subtotal * 0.13 * 100) / 100;
+  const total = Math.round(c.subtotal * 1.13 * 100) / 100;
+  const validUntil = addDays(c.fecha, 30);
+
+  return COT_TEMPLATE
+    .replace(/\{\{CLIENT_NAME\}\}/g,           () => esc(c.clientName))
+    .replace(/\{\{EMPRESA\}\}/g,               () => esc(c.empresa || ''))
+    .replace(/\{\{COT_REF\}\}/g,               () => esc(c.ref))
+    .replace(/\{\{DATE\}\}/g,                  () => formatDateFromISO(c.fecha))
+    .replace(/\{\{VALID_UNTIL\}\}/g,           () => formatDateFromISO(validUntil))
+    .replace(/\{\{DESCRIPCION_SERVICIO\}\}/g,  () => esc(c.descripcionServicio))
+    .replace(/\{\{DETALLES_PROYECTO\}\}/g,     () => esc(c.detallesProyecto || ''))
+    .replace(/\{\{CANTIDAD_PIEZAS\}\}/g,       () => esc(String(c.cantidadPiezas || '—')))
+    .replace(/\{\{FORMATO\}\}/g,               () => esc(c.formato || '—'))
+    .replace(/\{\{DURACION_ESTIMADA\}\}/g,     () => esc(c.duracionEstimada || '—'))
+    .replace(/\{\{TIEMPO_PRODUCCION\}\}/g,     () => esc(c.tiempoProduccion || '—'))
+    .replace(/\{\{SUBTOTAL_FMT\}\}/g,          () => fmtUSD(c.subtotal))
+    .replace(/\{\{IVA_FMT\}\}/g,               () => fmtUSD(iva))
+    .replace(/\{\{TOTAL_FMT\}\}/g,             () => fmtUSD(total));
+}
+
+app.get('/cotizacion/:id', (req, res) => {
+  try {
+    const cot = readCotizaciones().find(c => c.id === req.params.id);
+    if (!cot) return res.status(404).send('<h2>Cotización no encontrada</h2>');
+    res.send(renderCotizacion(cot));
+  } catch (err) {
+    console.error('Error al renderizar cotización:', err);
+    res.status(500).send('<h2>Error interno al generar la cotización</h2>');
+  }
+});
+
+app.post('/api/cotizaciones', (req, res) => {
+  const { clientName, empresa, fecha, descripcionServicio, detallesProyecto,
+          cantidadPiezas, formato, duracionEstimada, tiempoProduccion, subtotal } = req.body;
+  if (!clientName || !fecha || !descripcionServicio || subtotal === undefined) {
+    return res.status(400).json({ error: 'Faltan campos requeridos.' });
+  }
+  const cotizaciones = readCotizaciones();
+  const id  = generateCotizacionId(clientName, cotizaciones);
+  const ref = generateCotizacionRef(cotizaciones);
+  cotizaciones.push({
+    id, ref,
+    clientName,
+    empresa:             empresa             || '',
+    fecha,
+    descripcionServicio,
+    detallesProyecto:    detallesProyecto    || '',
+    cantidadPiezas:      cantidadPiezas      || '',
+    formato:             formato             || '',
+    duracionEstimada:    duracionEstimada    || '',
+    tiempoProduccion:    tiempoProduccion    || '',
+    subtotal:            Number(subtotal),
+    createdAt: new Date().toISOString(),
+  });
+  writeCotizaciones(cotizaciones);
+  res.json({ id, ref, url: `/cotizacion/${id}` });
+});
+
+app.get('/api/cotizaciones', (req, res) => {
+  res.json(readCotizaciones());
+});
+
+app.get('/api/cotizaciones/:id', (req, res) => {
+  const cot = readCotizaciones().find(c => c.id === req.params.id);
+  if (!cot) return res.status(404).json({ error: 'Cotización no encontrada.' });
+  res.json(cot);
+});
+
+app.delete('/api/cotizaciones/:id', (req, res) => {
+  const list = readCotizaciones();
+  const filtered = list.filter(c => c.id !== req.params.id);
+  if (filtered.length === list.length) {
+    return res.status(404).json({ error: 'Cotización no encontrada.' });
+  }
+  writeCotizaciones(filtered);
+  res.json({ ok: true });
 });
 
 app.listen(PORT, () => {

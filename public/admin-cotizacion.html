@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Cotizaciones</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .price-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .price-box {
+      background: #f8f9fb;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      text-align: center;
+    }
+    .price-box.total {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+    .price-box .pb-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .price-box .pb-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .price-box.total .pb-value { color: #15803d; }
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0;
+    }
+    .nav-tab {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      transition: all 0.15s;
+    }
+    .nav-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .nav-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+
+    <header class="admin-header">
+      <div class="logo" style="background:#15803d">C</div>
+      <div style="flex:1">
+        <h1>Panel de Cotizaciones</h1>
+        <p>Crea y gestiona cotizaciones para tus clientes</p>
+      </div>
+      <div class="nav-tabs">
+        <a href="/admin.html" class="nav-tab">Propuestas</a>
+        <a href="/admin-cotizacion.html" class="nav-tab active">Cotizaciones</a>
+      </div>
+      <button class="btn btn-ghost" id="logoutBtn">Cerrar sesión</button>
+    </header>
+
+    <!-- FORMULARIO -->
+    <main>
+      <div class="card">
+        <h2>Nueva cotización</h2>
+        <form id="cotizacionForm">
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+            <div class="form-group" style="margin-bottom:0">
+              <label for="clientName">Nombre del cliente *</label>
+              <input type="text" id="clientName" placeholder="Ej: Carmen Álava" required />
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label for="empresa">Empresa</label>
+              <input type="text" id="empresa" placeholder="Ej: Estudio Álava" />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem">
+            <label for="fecha">Fecha *</label>
+            <input type="date" id="fecha" required />
+          </div>
+
+          <div class="form-group">
+            <label for="descripcionServicio">Descripción del servicio *</label>
+            <input type="text" id="descripcionServicio" placeholder="Ej: Producción de contenido mensual para redes sociales" required />
+          </div>
+
+          <div class="form-group">
+            <label for="detallesProyecto">Detalles del proyecto</label>
+            <textarea id="detallesProyecto" rows="5" placeholder="Descripción completa del alcance, objetivos y entregables del proyecto..."></textarea>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+            <div class="form-group" style="margin-bottom:0">
+              <label for="cantidadPiezas">Cantidad de piezas</label>
+              <input type="number" id="cantidadPiezas" placeholder="Ej: 4" min="0" />
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label for="formato">Formato</label>
+              <input type="text" id="formato" placeholder="Ej: Reels + Carruseles" />
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:0.75rem">
+            <div class="form-group" style="margin-bottom:0">
+              <label for="duracionEstimada">Duración estimada</label>
+              <input type="text" id="duracionEstimada" placeholder="Ej: 3 meses" />
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label for="tiempoProduccion">Tiempo de producción</label>
+              <input type="text" id="tiempoProduccion" placeholder="Ej: 1 día mensual" />
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem">
+            <label for="subtotal">Subtotal (USD) *</label>
+            <input type="number" id="subtotal" placeholder="Ej: 900" min="0" step="0.01" required />
+            <div class="price-preview">
+              <div class="price-box">
+                <div class="pb-label">Subtotal</div>
+                <div class="pb-value" id="previewSubtotal">$0.00</div>
+              </div>
+              <div class="price-box">
+                <div class="pb-label">IVA 13%</div>
+                <div class="pb-value" id="previewIva">$0.00</div>
+              </div>
+              <div class="price-box total">
+                <div class="pb-label">Total</div>
+                <div class="pb-value" id="previewTotal">$0.00</div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="background:#15803d;margin-top:0.5rem">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Generar cotización
+          </button>
+
+          <div class="result-banner" id="resultBanner">
+            <p>✅ ¡Cotización creada exitosamente!</p>
+            <a id="resultLink" href="#" target="_blank"></a>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <!-- LISTA -->
+    <aside>
+      <div class="card">
+        <h2>Cotizaciones generadas</h2>
+        <div id="cotizacionesList">
+          <div class="empty-state">Cargando...</div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <script>
+    const BASE = window.location.origin;
+
+    // Cálculo automático IVA
+    document.getElementById('subtotal').addEventListener('input', function () {
+      const sub = parseFloat(this.value) || 0;
+      const iva = sub * 0.13;
+      const total = sub + iva;
+      document.getElementById('previewSubtotal').textContent = fmtUSD(sub);
+      document.getElementById('previewIva').textContent = fmtUSD(iva);
+      document.getElementById('previewTotal').textContent = fmtUSD(total);
+    });
+
+    function fmtUSD(n) {
+      return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Establecer fecha de hoy por defecto
+    const today = new Date().toISOString().slice(0, 10);
+    document.getElementById('fecha').value = today;
+
+    async function loadCotizaciones() {
+      const res = await fetch('/api/cotizaciones');
+      const list = await res.json();
+      const container = document.getElementById('cotizacionesList');
+
+      if (!list.length) {
+        container.innerHTML = '<div class="empty-state">No hay cotizaciones aún.</div>';
+        return;
+      }
+
+      container.innerHTML = list.slice().reverse().map(c => {
+        const total = (c.subtotal * 1.13).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return `
+          <div class="proposal-item" id="item-${c.id}">
+            <div class="proposal-info">
+              <strong>${escHtml(c.clientName)}</strong>
+              <span>${escHtml(c.ref)} · $${total}</span>
+            </div>
+            <div class="proposal-actions">
+              <a href="/cotizacion/${c.id}" target="_blank" class="btn btn-ghost">Ver</a>
+              <button class="btn btn-danger" onclick="deleteCotizacion('${c.id}')">✕</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    document.getElementById('cotizacionForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'Generando...';
+      btn.disabled = true;
+
+      const body = {
+        clientName:          document.getElementById('clientName').value.trim(),
+        empresa:             document.getElementById('empresa').value.trim(),
+        fecha:               document.getElementById('fecha').value,
+        descripcionServicio: document.getElementById('descripcionServicio').value.trim(),
+        detallesProyecto:    document.getElementById('detallesProyecto').value.trim(),
+        cantidadPiezas:      document.getElementById('cantidadPiezas').value.trim(),
+        formato:             document.getElementById('formato').value.trim(),
+        duracionEstimada:    document.getElementById('duracionEstimada').value.trim(),
+        tiempoProduccion:    document.getElementById('tiempoProduccion').value.trim(),
+        subtotal:            parseFloat(document.getElementById('subtotal').value) || 0,
+      };
+
+      try {
+        const res = await fetch('/api/cotizaciones', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        const fullUrl = `${BASE}${data.url}`;
+        const link = document.getElementById('resultLink');
+        link.href = fullUrl;
+        link.textContent = fullUrl;
+        document.getElementById('resultBanner').classList.add('show');
+
+        e.target.reset();
+        document.getElementById('fecha').value = today;
+        ['previewSubtotal', 'previewIva', 'previewTotal'].forEach(id => {
+          document.getElementById(id).textContent = '$0.00';
+        });
+        loadCotizaciones();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Generar cotización';
+        btn.disabled = false;
+      }
+    });
+
+    async function deleteCotizacion(id) {
+      if (!confirm('¿Eliminar esta cotización?')) return;
+      await fetch(`/api/cotizaciones/${id}`, { method: 'DELETE' });
+      document.getElementById(`item-${id}`)?.remove();
+      const list = document.getElementById('cotizacionesList');
+      if (!list.querySelector('.proposal-item')) {
+        list.innerHTML = '<div class="empty-state">No hay cotizaciones aún.</div>';
+      }
+    }
+
+    function escHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])
+      );
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      window.location.href = '/login.html';
+    });
+
+    loadCotizaciones();
+  </script>
+</body>
+</html>
