@@ -56,19 +56,26 @@ function generateSlug(firstName, lastName, proposals) {
   return `${base}-${n}`;
 }
 
+function readJSON(file) {
+  if (!fs.existsSync(file)) return [];
+  return JSON.parse(fs.readFileSync(file, 'utf-8'));
+}
+
 function readProposals() {
-  return JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
+  return readJSON(DATA_FILE);
 }
 
 function writeProposals(data) {
+  fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
 function readCotizaciones() {
-  return JSON.parse(fs.readFileSync(COT_FILE, 'utf-8'));
+  return readJSON(COT_FILE);
 }
 
 function writeCotizaciones(data) {
+  fs.mkdirSync(path.dirname(COT_FILE), { recursive: true });
   fs.writeFileSync(COT_FILE, JSON.stringify(data, null, 2));
 }
 
