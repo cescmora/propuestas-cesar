@@ -278,9 +278,9 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
     </div>
     <h2 class="display-title white">
       <span class="t-sans">CÓMO FUNCIONA</span>
-      <span class="t-serif">cada mes</span>
+      <span class="t-serif">{{PROCESO_TITLE}}</span>
     </h2>
-    <p class="proceso-intro">Un día de producción al mes es todo lo que necesitamos. Organizamos la fecha, llegamos al sitio con equipo listo y grabamos el material para el mes completo. Cuatro piezas editadas y listas para publicar.</p>
+    <p class="proceso-intro">{{PROCESO_INTRO}}</p>
     <div class="semanas-wrap">
       {{SEMANAS_HTML}}
     </div>
@@ -302,14 +302,14 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
     <div class="inv-center">
       <div class="inv-plan">{{PLAN_NAME}}</div>
       <div class="inv-price">{{PRICE}}</div>
-      <p class="inv-cadencia">por mes &nbsp;·&nbsp; mínimo 3 meses</p>
+      <p class="inv-cadencia">{{INV_CADENCIA}}</p>
       <ul class="inv-list" id="includesList">
         {{INCLUDES_HTML}}
       </ul>
       <div class="inv-grid2">
         <div class="pago-block">
           <div class="pago-titulo">Condición de pago</div>
-          <p class="pago-txt">El pago mensual se realiza dentro de los primeros 5 días de cada mes para iniciar la planificación a tiempo.</p>
+          <p class="pago-txt">{{PAGO_TXT}}</p>
           <div class="datos">
             <div class="dato-row"><span class="dato-k">Banco</span><span class="dato-v">Banco BAC</span></div>
             <div class="dato-row"><span class="dato-k">Titular</span><span class="dato-v">César Mora Delgado</span></div>
@@ -337,8 +337,8 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
     </h2>
     <div class="cierre-center">
       <div class="cierre-txt">
-        <p>Los resultados en redes no son inmediatos — y cualquiera que te diga lo contrario no te está siendo honesto. Lo que sí ocurre cuando hay constancia y criterio es que con el tiempo la audiencia correcta empieza a encontrarte, a seguirte y a confiar en ti.</p>
-        <p>Para esto vamos a probar formatos, identificar qué conecta con tu audiencia y repetirlo con intención.</p>
+        <p>{{CIERRE_1}}</p>
+        <p>{{CIERRE_2}}</p>
       </div>
       <div class="firma">
         <div class="firma-nombre">César Mora</div>
@@ -351,7 +351,7 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
 
 <footer>
   <div class="foot-logo">César Mora / Director Creativo</div>
-  <div class="foot-note">Propuesta válida 30 días · Precios en USD · Mínimo 3 meses</div>
+  <div class="foot-note">{{FOOT_NOTE}}</div>
 </footer>
 
 <script>

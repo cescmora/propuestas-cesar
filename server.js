@@ -111,7 +111,7 @@ function generateContentTypesHTML(types) {
 }
 
 // semanas puede ser array de objetos {tipo, plus} o derivarse de contentTypes (legado)
-function generateSemanasHTML(semanas, types) {
+function generateSemanasHTML(semanas, types, stepLabel = 'Semana') {
   let items;
   if (semanas && semanas.length) {
     items = semanas.slice(0, 4).map(s => ({ tipo: s.tipo || '', plus: s.plus || '' }));
@@ -126,7 +126,7 @@ function generateSemanasHTML(semanas, types) {
   }
   return items.map((s, i) =>
     '<div class="sem-block">' +
-      '<div class="sem-num">Semana ' + (i + 1) + '</div>' +
+      '<div class="sem-num">' + stepLabel + ' ' + (i + 1) + '</div>' +
       '<div class="sem-tipo">' + esc(s.tipo) + '</div>' +
       '<div class="sem-plus">' + esc(s.plus) + '</div>' +
     '</div>'
@@ -156,7 +156,25 @@ function renderProposal(p) {
   const price      = '$' + Number(p.price).toLocaleString('es-CR');
 
   const contentTypesHTML = generateContentTypesHTML(p.contentTypes);
-  const semanasHTML      = generateSemanasHTML(p.semanas, p.contentTypes);
+  const isProyecto       = p.tipo === 'proyecto';
+  const semanasHTML      = generateSemanasHTML(p.semanas, p.contentTypes, isProyecto ? 'Paso' : 'Semana');
+  const T = isProyecto ? {
+    procesoTitle: 'paso a paso',
+    procesoIntro: 'Un solo día de producción. Antes definimos guion y hooks, el día de grabación llegamos con equipo listo, y después editamos y entregamos todo listo para publicar.',
+    cadencia:     'pago único',
+    pagoTxt:      '50% para reservar la fecha de producción y 50% contra entrega del material final.',
+    cierre1:      'Un video no funciona solo por cómo se ve. Funciona cuando los primeros segundos detienen a la persona correcta. Por eso cada video sale con varias versiones de hook: las publicamos, medimos cuál retiene mejor y sabemos con datos qué mensaje conecta.',
+    cierre2:      'Eso te deja dos videos listos y una lectura clara de qué decir y cómo decirlo en lo que venga.',
+    footNote:     'Propuesta válida 30 días · Precios en USD',
+  } : {
+    procesoTitle: 'cada mes',
+    procesoIntro: 'Un día de producción al mes es todo lo que necesitamos. Organizamos la fecha, llegamos al sitio con equipo listo y grabamos el material para el mes completo. Cuatro piezas editadas y listas para publicar.',
+    cadencia:     'por mes &nbsp;·&nbsp; mínimo 3 meses',
+    pagoTxt:      'El pago mensual se realiza dentro de los primeros 5 días de cada mes para iniciar la planificación a tiempo.',
+    cierre1:      'Los resultados en redes no son inmediatos — y cualquiera que te diga lo contrario no te está siendo honesto. Lo que sí ocurre cuando hay constancia y criterio es que con el tiempo la audiencia correcta empieza a encontrarte, a seguirte y a confiar en ti.',
+    cierre2:      'Para esto vamos a probar formatos, identificar qué conecta con tu audiencia y repetirlo con intención.',
+    footNote:     'Propuesta válida 30 días · Precios en USD · Mínimo 3 meses',
+  };
   const includesHTML     = generateIncludesHTML(p.includes, p.contentTypes);
   const proposalIntro    = p.proposalIntro
     ? esc(p.proposalIntro)
@@ -174,7 +192,14 @@ function renderProposal(p) {
     .replace(/\{\{PROPOSAL_INTRO\}\}/g,      () => proposalIntro)
     .replace(/\{\{CONTENT_TYPES_HTML\}\}/g,  () => contentTypesHTML)
     .replace(/\{\{SEMANAS_HTML\}\}/g,        () => semanasHTML)
-    .replace(/\{\{INCLUDES_HTML\}\}/g,       () => includesHTML);
+    .replace(/\{\{INCLUDES_HTML\}\}/g,       () => includesHTML)
+    .replace(/\{\{PROCESO_TITLE\}\}/g,       () => T.procesoTitle)
+    .replace(/\{\{PROCESO_INTRO\}\}/g,       () => T.procesoIntro)
+    .replace(/\{\{INV_CADENCIA\}\}/g,        () => T.cadencia)
+    .replace(/\{\{PAGO_TXT\}\}/g,            () => T.pagoTxt)
+    .replace(/\{\{CIERRE_1\}\}/g,            () => T.cierre1)
+    .replace(/\{\{CIERRE_2\}\}/g,            () => T.cierre2)
+    .replace(/\{\{FOOT_NOTE\}\}/g,           () => T.footNote);
 }
 
 // ── rutas ─────────────────────────────────────────────────────────────────────
@@ -191,7 +216,7 @@ app.get('/p/:id', (req, res) => {
 });
 
 app.post('/api/proposals', (req, res) => {
-  const { firstName, lastName, industry, plan, price,
+  const { firstName, lastName, industry, plan, price, tipo,
           contentTypes, semanas, proposalIntro, includes } = req.body;
   if (!firstName || !plan || !price) {
     return res.status(400).json({ error: 'Faltan campos requeridos.' });
@@ -204,6 +229,7 @@ app.post('/api/proposals', (req, res) => {
     lastName:      lastName      || '',
     industry:      industry      || '',
     plan,
+    tipo:          tipo === 'proyecto' ? 'proyecto' : 'mensual',
     price:         Number(price),
     contentTypes:  contentTypes  || [],
     semanas:       semanas       || [],

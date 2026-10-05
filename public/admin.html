@@ -81,6 +81,7 @@
               <option>Educación</option>
               <option>Bienestar y Fitness</option>
               <option>Tecnología</option>
+              <option>Logística y Transporte</option>
               <option>Inmobiliaria</option>
               <option>Turismo y Hoteles</option>
               <option>Servicios Profesionales</option>
@@ -89,18 +90,27 @@
           </div>
 
           <div class="form-group">
-            <label for="plan">Plan *</label>
+            <label for="tipo">Tipo de propuesta *</label>
+            <select id="tipo" required>
+              <option value="mensual">Acompañamiento mensual (mínimo 3 meses)</option>
+              <option value="proyecto">Proyecto único (pago único)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="plan">Plan / nombre del proyecto *</label>
             <select id="plan" required>
               <option value="">Selecciona un plan</option>
               <option>Starter</option>
               <option>Profesional</option>
               <option>Premium</option>
               <option>Personalizado</option>
+              <option>Proyecto</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="price">Precio mensual (USD) *</label>
+            <label for="price">Precio (USD) — mensual o total según el tipo *</label>
             <input type="number" id="price" placeholder="Ej: 900" min="0" required />
           </div>
 
@@ -138,7 +148,7 @@
 
           <!-- SEMANAS -->
           <div class="form-group">
-            <label>Cómo funciona cada mes (4 semanas)</label>
+            <label>Cómo funciona (4 semanas en mensual, 4 pasos en proyecto)</label>
             <div id="semanasFields">
 
               <div class="sem-row">
@@ -279,6 +289,7 @@ Dirección creativa completa
         lastName:      document.getElementById('lastName').value.trim(),
         industry:      document.getElementById('industry').value,
         plan:          document.getElementById('plan').value,
+        tipo:          document.getElementById('tipo').value,
         price:         Number(document.getElementById('price').value),
         contentTypes,
         semanas,
