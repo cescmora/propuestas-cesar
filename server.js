@@ -181,6 +181,11 @@ function renderProposal(p) {
     : 'Lo que vamos a construir juntos no es una cuenta más de redes. Es la versión digital de lo que ya eres: alguien con experiencia, criterio y una forma propia de hacer las cosas. La estrategia parte de escucharte: cómo hablas de tu trabajo, qué detalles te importan y cómo describes lo que haces con orgullo. Eso es lo que traducimos en contenido. Y por eso se va a ver diferente a todo lo demás.';
 
   // Usar funciones en replace() evita que $, $& etc. del valor se interpreten como patrones
+  if (p.iva) {
+    T.cadencia += ' &nbsp;·&nbsp; + IVA (13%)';
+    T.footNote  = T.footNote.replace('Precios en USD', 'Precios en USD + IVA');
+  }
+
   return TEMPLATE
     .replace(/\{\{CLIENT_NAME\}\}/g,         () => clientName)
     .replace(/\{\{CLIENT_FIRST_NAME\}\}/g,   () => firstName)
@@ -216,7 +221,7 @@ app.get('/p/:id', (req, res) => {
 });
 
 app.post('/api/proposals', (req, res) => {
-  const { firstName, lastName, industry, plan, price, tipo,
+  const { firstName, lastName, industry, plan, price, tipo, iva,
           contentTypes, semanas, proposalIntro, includes } = req.body;
   if (!firstName || !plan || !price) {
     return res.status(400).json({ error: 'Faltan campos requeridos.' });
@@ -230,6 +235,7 @@ app.post('/api/proposals', (req, res) => {
     industry:      industry      || '',
     plan,
     tipo:          tipo === 'proyecto' ? 'proyecto' : 'mensual',
+    iva:           iva === true,
     price:         Number(price),
     contentTypes:  contentTypes  || [],
     semanas:       semanas       || [],

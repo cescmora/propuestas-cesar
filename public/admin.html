@@ -112,6 +112,9 @@
           <div class="form-group">
             <label for="price">Precio (USD) — mensual o total según el tipo *</label>
             <input type="number" id="price" placeholder="Ej: 900" min="0" required />
+            <label style="display:flex;align-items:center;gap:0.5rem;margin-top:0.6rem;font-weight:400;text-transform:none;letter-spacing:0">
+              <input type="checkbox" id="iva" style="width:auto" /> IVA (13%) aparte
+            </label>
           </div>
 
           <!-- TIPOS DE CONTENIDO -->
@@ -290,6 +293,7 @@ Dirección creativa completa
         industry:      document.getElementById('industry').value,
         plan:          document.getElementById('plan').value,
         tipo:          document.getElementById('tipo').value,
+        iva:           document.getElementById('iva').checked,
         price:         Number(document.getElementById('price').value),
         contentTypes,
         semanas,
