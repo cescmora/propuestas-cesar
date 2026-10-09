@@ -19,6 +19,7 @@
   --gray: #888885;
   --mid: #3A3A38;
   --border: rgba(14,14,14,0.1);
+  --grad: linear-gradient(145deg, #2A9A7A 0%, #1A6B5A 45%, #0A3528 100%);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -39,7 +40,7 @@ nav {
 /* ── PORTADA ── */
 .portada {
   min-height: 100vh; padding-top: 56px;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"), linear-gradient(145deg, #2A9A7A 0%, #1A6B5A 45%, #0A3528 100%);
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"), var(--grad);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center; padding: 120px 48px 80px;
@@ -86,7 +87,7 @@ nav {
 /* ── SECCIONES ── */
 .sec { padding: 96px 48px; max-width: 960px; margin: 0 auto; opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .sec-wrap { padding: 96px 48px; }
-.sec-wrap.blue { background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"), linear-gradient(145deg, #2A9A7A 0%, #1A6B5A 45%, #0A3528 100%); }
+.sec-wrap.blue { background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"), var(--grad); }
 .sec-wrap.white { background: var(--white); }
 .sec-wrap.cream { background: var(--cream); }
 .sec.visible { opacity: 1; transform: translateY(0); }
@@ -213,6 +214,8 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
   footer{flex-direction:column;gap:8px;text-align:center;padding:20px;}
 }
 
+.portada-logo { display:block; max-height:64px; max-width:min(360px, 80vw); height:auto; width:auto; margin:0 auto 36px; opacity:0; animation: fadeIn 0.9s ease 0.1s forwards; }
+{{THEME_CSS}}
 </style>
 </head>
 <body>
@@ -226,6 +229,7 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
 
 <!-- PORTADA -->
 <div class="portada">
+  {{LOGO_HTML}}
   <p class="portada-eyebrow">Propuesta de contenido</p>
   <h1 class="portada-title">
     <span class="t-sans">{{CLIENT_FIRST_NAME}}</span>

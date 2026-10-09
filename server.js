@@ -181,6 +181,15 @@ function renderProposal(p) {
     : 'Lo que vamos a construir juntos no es una cuenta más de redes. Es la versión digital de lo que ya eres: alguien con experiencia, criterio y una forma propia de hacer las cosas. La estrategia parte de escucharte: cómo hablas de tu trabajo, qué detalles te importan y cómo describes lo que haces con orgullo. Eso es lo que traducimos en contenido. Y por eso se va a ver diferente a todo lo demás.';
 
   // Usar funciones en replace() evita que $, $& etc. del valor se interpreten como patrones
+  const THEMES = {
+    neutro: `:root { --blue:#2B2B29; --blue-dark:#1C1C1B; --blue-light:#ECEBE7;
+      --grad: linear-gradient(145deg, #55544F 0%, #2B2B29 45%, #111110 100%); }
+      .portada-title .t-serif, .display-title.white .t-serif { color:#C9C5BB; }`,
+  };
+  const themeCSS = THEMES[p.tema] || '';
+  const logoFile = /^[a-zA-Z0-9._-]+$/.test(p.logo || '') ? p.logo : '';
+  const logoHTML = logoFile ? `<img class="portada-logo" src="/logos/${logoFile}" alt="${clientName}">` : '';
+
   if (p.iva) {
     T.cadencia += ' &nbsp;·&nbsp; + IVA (13%)';
     T.footNote  = T.footNote.replace('Precios en USD', 'Precios en USD + IVA');
@@ -204,7 +213,9 @@ function renderProposal(p) {
     .replace(/\{\{PAGO_TXT\}\}/g,            () => T.pagoTxt)
     .replace(/\{\{CIERRE_1\}\}/g,            () => T.cierre1)
     .replace(/\{\{CIERRE_2\}\}/g,            () => T.cierre2)
-    .replace(/\{\{FOOT_NOTE\}\}/g,           () => T.footNote);
+    .replace(/\{\{FOOT_NOTE\}\}/g,           () => T.footNote)
+    .replace(/\{\{THEME_CSS\}\}/g,           () => themeCSS)
+    .replace(/\{\{LOGO_HTML\}\}/g,           () => logoHTML);
 }
 
 // ── rutas ─────────────────────────────────────────────────────────────────────
@@ -221,7 +232,7 @@ app.get('/p/:id', (req, res) => {
 });
 
 app.post('/api/proposals', (req, res) => {
-  const { firstName, lastName, industry, plan, price, tipo, iva,
+  const { firstName, lastName, industry, plan, price, tipo, iva, tema, logo,
           contentTypes, semanas, proposalIntro, includes } = req.body;
   if (!firstName || !plan || !price) {
     return res.status(400).json({ error: 'Faltan campos requeridos.' });
@@ -236,6 +247,8 @@ app.post('/api/proposals', (req, res) => {
     plan,
     tipo:          tipo === 'proyecto' ? 'proyecto' : 'mensual',
     iva:           iva === true,
+    tema:          tema === 'neutro' ? 'neutro' : 'verde',
+    logo:          /^[a-zA-Z0-9._-]+$/.test(logo || '') ? logo : '',
     price:         Number(price),
     contentTypes:  contentTypes  || [],
     semanas:       semanas       || [],

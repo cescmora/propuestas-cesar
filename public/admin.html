@@ -97,6 +97,20 @@
             </select>
           </div>
 
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+            <div class="form-group">
+              <label for="tema">Color</label>
+              <select id="tema">
+                <option value="verde">Verde</option>
+                <option value="neutro">Neutro (grafito)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="logo">Logo del cliente (archivo en /logos)</label>
+              <input type="text" id="logo" placeholder="Ej: alltruck.png" />
+            </div>
+          </div>
+
           <div class="form-group">
             <label for="plan">Plan / nombre del proyecto *</label>
             <select id="plan" required>
@@ -294,6 +308,8 @@ Dirección creativa completa
         plan:          document.getElementById('plan').value,
         tipo:          document.getElementById('tipo').value,
         iva:           document.getElementById('iva').checked,
+        tema:          document.getElementById('tema').value,
+        logo:          document.getElementById('logo').value.trim(),
         price:         Number(document.getElementById('price').value),
         contentTypes,
         semanas,
