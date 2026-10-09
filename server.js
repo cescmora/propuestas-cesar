@@ -197,10 +197,11 @@ function renderProposal(p) {
     T.footNote  = T.footNote.replace('Precios en USD', 'Precios en USD + IVA');
   }
 
-  // En proyectos únicos no se muestra la sección "Una última cosa"
-  const base = isProyecto
+  // "Una última cosa": oculta en proyectos únicos o si la propuesta lo pide
+  const base = (isProyecto || p.sinCierre)
     ? TEMPLATE.replace(/<!-- CIERRE -->[\s\S]*?(?=<footer>)/, '')
     : TEMPLATE;
+  const eyebrow = isProyecto ? 'Propuesta de contenido' : 'Propuesta de contenido mensual';
 
   return base
     .replace(/\{\{CLIENT_NAME\}\}/g,         () => clientName)
@@ -222,7 +223,8 @@ function renderProposal(p) {
     .replace(/\{\{CIERRE_2\}\}/g,            () => T.cierre2)
     .replace(/\{\{FOOT_NOTE\}\}/g,           () => T.footNote)
     .replace(/\{\{THEME_CSS\}\}/g,           () => themeCSS)
-    .replace(/\{\{PORTADA_TITLE\}\}/g,       () => portadaTitle);
+    .replace(/\{\{PORTADA_TITLE\}\}/g,       () => portadaTitle)
+    .replace(/\{\{EYEBROW\}\}/g,             () => eyebrow);
 }
 
 // ── rutas ─────────────────────────────────────────────────────────────────────
@@ -239,7 +241,7 @@ app.get('/p/:id', (req, res) => {
 });
 
 app.post('/api/proposals', (req, res) => {
-  const { firstName, lastName, industry, plan, price, tipo, iva, tema, logo,
+  const { firstName, lastName, industry, plan, price, tipo, iva, tema, logo, sinCierre,
           contentTypes, semanas, proposalIntro, includes } = req.body;
   if (!firstName || !plan || !price) {
     return res.status(400).json({ error: 'Faltan campos requeridos.' });
@@ -255,6 +257,7 @@ app.post('/api/proposals', (req, res) => {
     tipo:          tipo === 'proyecto' ? 'proyecto' : 'mensual',
     iva:           iva === true,
     tema:          tema === 'neutro' ? 'neutro' : 'verde',
+    sinCierre:     sinCierre === true,
     logo:          /^[a-zA-Z0-9._-]+$/.test(logo || '') ? logo : '',
     price:         Number(price),
     contentTypes:  contentTypes  || [],

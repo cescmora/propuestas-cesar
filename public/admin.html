@@ -129,6 +129,9 @@
             <label style="display:flex;align-items:center;gap:0.5rem;margin-top:0.6rem;font-weight:400;text-transform:none;letter-spacing:0">
               <input type="checkbox" id="iva" style="width:auto" /> IVA (13%) aparte
             </label>
+            <label style="display:flex;align-items:center;gap:0.5rem;margin-top:0.4rem;font-weight:400;text-transform:none;letter-spacing:0">
+              <input type="checkbox" id="sinCierre" style="width:auto" /> Ocultar "Una última cosa"
+            </label>
           </div>
 
           <!-- TIPOS DE CONTENIDO -->
@@ -310,6 +313,7 @@ Dirección creativa completa
         iva:           document.getElementById('iva').checked,
         tema:          document.getElementById('tema').value,
         logo:          document.getElementById('logo').value.trim(),
+        sinCierre:     document.getElementById('sinCierre').checked,
         price:         Number(document.getElementById('price').value),
         contentTypes,
         semanas,
