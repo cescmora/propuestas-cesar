@@ -132,6 +132,10 @@
             <label style="display:flex;align-items:center;gap:0.5rem;margin-top:0.4rem;font-weight:400;text-transform:none;letter-spacing:0">
               <input type="checkbox" id="sinCierre" style="width:auto" /> Ocultar "Una última cosa"
             </label>
+            <label style="display:flex;align-items:center;gap:0.5rem;margin-top:0.4rem;font-weight:400;text-transform:none;letter-spacing:0">
+              <input type="checkbox" id="sinMinimo" style="width:auto" /> Mensual sin mínimo de 3 meses
+            </label>
+            <input type="text" id="priceNote" style="margin-top:0.6rem" placeholder="Nota bajo el precio (opcional). Ej: Contratando 3 meses: **$850 al mes**" />
           </div>
 
           <!-- TIPOS DE CONTENIDO -->
@@ -314,6 +318,8 @@ Dirección creativa completa
         tema:          document.getElementById('tema').value,
         logo:          document.getElementById('logo').value.trim(),
         sinCierre:     document.getElementById('sinCierre').checked,
+        sinMinimo:     document.getElementById('sinMinimo').checked,
+        priceNote:     document.getElementById('priceNote').value.trim(),
         price:         Number(document.getElementById('price').value),
         contentTypes,
         semanas,

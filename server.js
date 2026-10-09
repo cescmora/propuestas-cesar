@@ -192,6 +192,12 @@ function renderProposal(p) {
     ? `<h1 class="portada-title"><img class="portada-logo" src="/logos/${logoFile}" alt="${clientName}"></h1>`
     : `<h1 class="portada-title">\n    <span class="t-sans">${firstName}</span>\n    <span class="t-serif">${lastName}</span>\n  </h1>`;
 
+  if (!isProyecto && p.sinMinimo) {
+    T.cadencia = 'por mes';
+    T.footNote = T.footNote.replace(' · Mínimo 3 meses', '');
+  }
+  const priceNoteHTML = p.priceNote ? `<p class="inv-oferta">${esc(p.priceNote).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>` : '';
+
   if (p.iva) {
     T.cadencia += ' &nbsp;·&nbsp; + IVA (13%)';
     T.footNote  = T.footNote.replace('Precios en USD', 'Precios en USD + IVA');
@@ -224,7 +230,8 @@ function renderProposal(p) {
     .replace(/\{\{FOOT_NOTE\}\}/g,           () => T.footNote)
     .replace(/\{\{THEME_CSS\}\}/g,           () => themeCSS)
     .replace(/\{\{PORTADA_TITLE\}\}/g,       () => portadaTitle)
-    .replace(/\{\{EYEBROW\}\}/g,             () => eyebrow);
+    .replace(/\{\{EYEBROW\}\}/g,             () => eyebrow)
+    .replace(/\{\{PRICE_NOTE\}\}/g,          () => priceNoteHTML);
 }
 
 // ── rutas ─────────────────────────────────────────────────────────────────────
@@ -241,7 +248,7 @@ app.get('/p/:id', (req, res) => {
 });
 
 app.post('/api/proposals', (req, res) => {
-  const { firstName, lastName, industry, plan, price, tipo, iva, tema, logo, sinCierre,
+  const { firstName, lastName, industry, plan, price, tipo, iva, tema, logo, sinCierre, sinMinimo, priceNote,
           contentTypes, semanas, proposalIntro, includes } = req.body;
   if (!firstName || !plan || !price) {
     return res.status(400).json({ error: 'Faltan campos requeridos.' });
@@ -258,6 +265,8 @@ app.post('/api/proposals', (req, res) => {
     iva:           iva === true,
     tema:          tema === 'neutro' ? 'neutro' : 'verde',
     sinCierre:     sinCierre === true,
+    sinMinimo:     sinMinimo === true,
+    priceNote:     typeof priceNote === 'string' ? priceNote.slice(0, 200) : '',
     logo:          /^[a-zA-Z0-9._-]+$/.test(logo || '') ? logo : '',
     price:         Number(price),
     contentTypes:  contentTypes  || [],

@@ -215,6 +215,8 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
 }
 
 .portada-logo { display:block; max-height:120px; max-width:min(620px, 84vw); height:auto; width:auto; margin:8px auto 28px; }
+.inv-oferta { margin:-24px auto 40px; padding:14px 22px; border:0.5px solid var(--border); background:var(--white); font-size:15px; color:var(--mid); display:inline-block; }
+.inv-oferta strong { color:var(--blue-dark); font-weight:600; }
 {{THEME_CSS}}
 </style>
 </head>
@@ -303,6 +305,7 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
       <div class="inv-plan">{{PLAN_NAME}}</div>
       <div class="inv-price">{{PRICE}}</div>
       <p class="inv-cadencia">{{INV_CADENCIA}}</p>
+      {{PRICE_NOTE}}
       <ul class="inv-list" id="includesList">
         {{INCLUDES_HTML}}
       </ul>
