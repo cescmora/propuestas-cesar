@@ -197,7 +197,12 @@ function renderProposal(p) {
     T.footNote  = T.footNote.replace('Precios en USD', 'Precios en USD + IVA');
   }
 
-  return TEMPLATE
+  // En proyectos únicos no se muestra la sección "Una última cosa"
+  const base = isProyecto
+    ? TEMPLATE.replace(/<!-- CIERRE -->[\s\S]*?(?=<footer>)/, '')
+    : TEMPLATE;
+
+  return base
     .replace(/\{\{CLIENT_NAME\}\}/g,         () => clientName)
     .replace(/\{\{CLIENT_FIRST_NAME\}\}/g,   () => firstName)
     .replace(/\{\{CLIENT_LAST_NAME\}\}/g,    () => lastName)
