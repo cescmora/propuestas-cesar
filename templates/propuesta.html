@@ -214,7 +214,7 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
   footer{flex-direction:column;gap:8px;text-align:center;padding:20px;}
 }
 
-.portada-logo { display:block; max-height:64px; max-width:min(360px, 80vw); height:auto; width:auto; margin:0 auto 36px; opacity:0; animation: fadeIn 0.9s ease 0.1s forwards; }
+.portada-logo { display:block; max-height:120px; max-width:min(620px, 84vw); height:auto; width:auto; margin:8px auto 28px; }
 {{THEME_CSS}}
 </style>
 </head>
@@ -229,12 +229,8 @@ footer { background: var(--black); padding: 24px 48px; display: flex; justify-co
 
 <!-- PORTADA -->
 <div class="portada">
-  {{LOGO_HTML}}
   <p class="portada-eyebrow">Propuesta de contenido</p>
-  <h1 class="portada-title">
-    <span class="t-sans">{{CLIENT_FIRST_NAME}}</span>
-    <span class="t-serif">{{CLIENT_LAST_NAME}}</span>
-  </h1>
+  {{PORTADA_TITLE}}
   <p class="portada-sub">{{CLIENT_INDUSTRY}} · Costa Rica</p>
   <div class="portada-meta">
     <div class="meta-item">

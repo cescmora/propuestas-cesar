@@ -188,7 +188,9 @@ function renderProposal(p) {
   };
   const themeCSS = THEMES[p.tema] || '';
   const logoFile = /^[a-zA-Z0-9._-]+$/.test(p.logo || '') ? p.logo : '';
-  const logoHTML = logoFile ? `<img class="portada-logo" src="/logos/${logoFile}" alt="${clientName}">` : '';
+  const portadaTitle = logoFile
+    ? `<h1 class="portada-title"><img class="portada-logo" src="/logos/${logoFile}" alt="${clientName}"></h1>`
+    : `<h1 class="portada-title">\n    <span class="t-sans">${firstName}</span>\n    <span class="t-serif">${lastName}</span>\n  </h1>`;
 
   if (p.iva) {
     T.cadencia += ' &nbsp;·&nbsp; + IVA (13%)';
@@ -215,7 +217,7 @@ function renderProposal(p) {
     .replace(/\{\{CIERRE_2\}\}/g,            () => T.cierre2)
     .replace(/\{\{FOOT_NOTE\}\}/g,           () => T.footNote)
     .replace(/\{\{THEME_CSS\}\}/g,           () => themeCSS)
-    .replace(/\{\{LOGO_HTML\}\}/g,           () => logoHTML);
+    .replace(/\{\{PORTADA_TITLE\}\}/g,       () => portadaTitle);
 }
 
 // ── rutas ─────────────────────────────────────────────────────────────────────
