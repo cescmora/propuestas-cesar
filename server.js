@@ -153,7 +153,7 @@ function renderProposal(p) {
   const lastName   = esc(p.lastName  || (p.clientName || '').split(' ').slice(1).join(' ') || '');
   const clientName = [firstName, lastName].filter(Boolean).join(' ');
   const date       = formatDate(p.createdAt);
-  const price      = '$' + Number(p.price).toLocaleString('es-CR');
+  const price      = '$' + Number(p.price).toLocaleString('en-US');
 
   const contentTypesHTML = generateContentTypesHTML(p.contentTypes);
   const isProyecto       = p.tipo === 'proyecto';
