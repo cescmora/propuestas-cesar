@@ -223,6 +223,11 @@
           </div>
 
           <div class="form-group">
+            <label for="procesoIntroField">Texto de "Cómo funciona" (opcional, reemplaza el texto por defecto)</label>
+            <textarea id="procesoIntroField" rows="3" placeholder="Déjalo vacío para usar el texto estándar"></textarea>
+          </div>
+
+          <div class="form-group">
             <label for="proposalIntro">Intro de propuesta</label>
             <textarea id="proposalIntro" rows="6">Lo que vamos a construir juntos no es una cuenta de redes más. Es la versión digital de lo que ya eres: alguien con experiencia, criterio y una forma propia de hacer las cosas. La estrategia parte de escucharte — cómo hablas de tu trabajo, qué detalles te importan, cómo describes lo que haces con orgullo. Eso es lo que traducimos en contenido. Y por eso se va a ver diferente a todo lo demás.</textarea>
           </div>
@@ -320,6 +325,7 @@ Dirección creativa completa
         sinCierre:     document.getElementById('sinCierre').checked,
         sinMinimo:     document.getElementById('sinMinimo').checked,
         priceNote:     document.getElementById('priceNote').value.trim(),
+        procesoIntro:  document.getElementById('procesoIntroField').value.trim(),
         price:         Number(document.getElementById('price').value),
         contentTypes,
         semanas,
