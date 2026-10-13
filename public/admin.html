@@ -222,6 +222,17 @@
             </div>
           </div>
 
+          <div style="display:grid;grid-template-columns:1fr 2fr;gap:0.75rem">
+            <div class="form-group">
+              <label for="enfoque">"Propuesta de…"</label>
+              <input type="text" id="enfoque" placeholder="contenido" />
+            </div>
+            <div class="form-group">
+              <label for="notaPrecio">Nota con * bajo el precio (opcional)</label>
+              <input type="text" id="notaPrecio" placeholder="Ej: Si desea cancelar en colones…" />
+            </div>
+          </div>
+
           <div class="form-group">
             <label for="procesoIntroField">Texto de "Cómo funciona" (opcional, reemplaza el texto por defecto)</label>
             <textarea id="procesoIntroField" rows="3" placeholder="Déjalo vacío para usar el texto estándar"></textarea>
@@ -326,6 +337,8 @@ Dirección creativa completa
         sinMinimo:     document.getElementById('sinMinimo').checked,
         priceNote:     document.getElementById('priceNote').value.trim(),
         procesoIntro:  document.getElementById('procesoIntroField').value.trim(),
+        enfoque:       document.getElementById('enfoque').value.trim(),
+        notaPrecio:    document.getElementById('notaPrecio').value.trim(),
         price:         Number(document.getElementById('price').value),
         contentTypes,
         semanas,

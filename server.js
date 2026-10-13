@@ -209,7 +209,10 @@ function renderProposal(p) {
   const base = (isProyecto || p.sinCierre)
     ? TEMPLATE.replace(/<!-- CIERRE -->[\s\S]*?(?=<footer>)/, '')
     : TEMPLATE;
-  const eyebrow = isProyecto ? 'Propuesta de contenido' : 'Propuesta de contenido mensual';
+  const enfoque = /^[a-záéíóúñ ]{1,30}$/i.test(p.enfoque || '') ? p.enfoque.toLowerCase() : 'contenido';
+  const eyebrow = 'Propuesta de ' + enfoque + (isProyecto ? '' : ' mensual');
+  const secSubtitle = 'de ' + enfoque;
+  const priceFootnoteHTML = p.notaPrecio ? `<p class="inv-footnote">* ${esc(p.notaPrecio)}</p>` : '';
 
   return base
     .replace(/\{\{CLIENT_NAME\}\}/g,         () => clientName)
@@ -233,7 +236,9 @@ function renderProposal(p) {
     .replace(/\{\{THEME_CSS\}\}/g,           () => themeCSS)
     .replace(/\{\{PORTADA_TITLE\}\}/g,       () => portadaTitle)
     .replace(/\{\{EYEBROW\}\}/g,             () => eyebrow)
-    .replace(/\{\{PRICE_NOTE\}\}/g,          () => priceNoteHTML);
+    .replace(/\{\{PRICE_NOTE\}\}/g,          () => priceNoteHTML)
+    .replace(/\{\{SEC_SUBTITLE\}\}/g,        () => secSubtitle)
+    .replace(/\{\{PRICE_FOOTNOTE\}\}/g,      () => priceFootnoteHTML);
 }
 
 // ── rutas ─────────────────────────────────────────────────────────────────────
@@ -250,7 +255,7 @@ app.get('/p/:id', (req, res) => {
 });
 
 app.post('/api/proposals', (req, res) => {
-  const { firstName, lastName, industry, plan, price, tipo, iva, tema, logo, sinCierre, sinMinimo, priceNote, procesoIntro: procesoIntroIn,
+  const { firstName, lastName, industry, plan, price, tipo, iva, tema, logo, sinCierre, sinMinimo, priceNote, procesoIntro: procesoIntroIn, enfoque, notaPrecio,
           contentTypes, semanas, proposalIntro, includes } = req.body;
   if (!firstName || !plan || !price) {
     return res.status(400).json({ error: 'Faltan campos requeridos.' });
@@ -270,6 +275,8 @@ app.post('/api/proposals', (req, res) => {
     sinMinimo:     sinMinimo === true,
     priceNote:     typeof priceNote === 'string' ? priceNote.slice(0, 200) : '',
     procesoIntro:  typeof procesoIntroIn === 'string' ? procesoIntroIn.slice(0, 600) : '',
+    enfoque:       typeof enfoque === 'string' ? enfoque.trim().slice(0, 30) : '',
+    notaPrecio:    typeof notaPrecio === 'string' ? notaPrecio.trim().slice(0, 300) : '',
     logo:          /^[a-zA-Z0-9._-]+$/.test(logo || '') ? logo : '',
     price:         Number(price),
     contentTypes:  contentTypes  || [],
